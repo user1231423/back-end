@@ -8,4 +8,4 @@ function nota(teorica,pratica){
     }
 }
 
-nota(2,16);.
+nota(2,16);
