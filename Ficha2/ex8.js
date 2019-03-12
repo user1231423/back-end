@@ -1,20 +1,19 @@
-function desenho(lado){
-    var cheio = "";
-    for (c = 0; c < lado; c++){
-        cheio += "*";
+function desenho(lado) {
+    var full = "";
+    for (i = 0; i < lado; i++) {
+        full += "*";
     }
-    console.log(cheio);
-    var desenho = "";
-    for (x = 0; x < lado-2; x++){
-        if (x == 1 || x == lado-2){
-            desenho += "*";
-        }else if(x > 1 && x < lado-2){
-            desenho += " ";
+    console.log(full);
+    for (c = 0; c < lado; c++) {
+        var mid_empty = "*";
+        for (x = 0; x < lado - 2; x++) {
+            mid_empty += " ";
+            if (x == lado - 3) {
+                mid_empty += "*";
+            }
         }
-        console.log(desenho);
+        console.log(mid_empty);
     }
-    console.log(cheio);
+    console.log(full);
 }
-
-
 desenho(10);
