@@ -6,7 +6,7 @@ function max(numeros,size){
             maior = numeros[i];//If number > maior set maior equal to number
         }
     }
-    console.log("Maior Número: " + maior)
+    console.log("Maior Número: " + maior);
 }
 
 //Find Smallest number
@@ -17,7 +17,7 @@ function menor(numeros,size){
             menor = numeros[i];//If numer < menor set menor equal to  number
         }
     }
-    console.log("Menor Número: " + menor)
+    console.log("Menor Número: " + menor);
 }
 
 //Find Average between all the numbers in the array
@@ -26,7 +26,7 @@ function media(numeros,size){
     for (i = 0; i<size; i++){
         soma = soma + numeros[i];//Sum all the numbers inside the array
     }
-    console.log("Média: " + soma/size)//Average = Sum off all the numbers dividing by the size of the array
+    console.log("Média: " + soma/size);//Average = Sum off all the numbers dividing by the size of the array
 }
 
 var num = [1,2,3,4,5,6,7,8,9,10];

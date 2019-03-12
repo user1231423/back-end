@@ -6,4 +6,4 @@ function soma(){
     console.log(retornar);
 }
 
-soma()
+soma();
