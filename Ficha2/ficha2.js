@@ -1,3 +1,126 @@
+/////////////// EX1 /////////////////////
+function imc(peso,altura) {
+    var massa = peso/Math.pow(altura,2);
+    if (massa < 18.5){
+        console.log("Abaixo do peso-> ", massa);
+    }else if(massa > 18.5 && massa < 25){
+        console.log("No peso normal-> ", massa);
+    }else if(massa > 25 && massa < 30){
+        console.log("Acima do peso-> ", massa);
+    }else{
+        console.log("Obeso-> ", massa);
+    }
+}
+imc(70,1.75);
+/////////////// EX1--- FIM!!!!! /////////////////////
+
+/////////////// EX2 /////////////////////
+function reverse(palavra) {
+    var size  = palavra.length;
+    var reversed = "";
+    for (var i = size-1; i >= 0; i-- ){
+        reversed += palavra[i];
+    }
+    return reversed;
+}
+
+console.log(reverse("Imprime ao contrario"));
+/////////////// EX2--- FIM!!!!! /////////////////////
+
+/////////////// EX3 /////////////////////
+function vogal(frase) {
+    var size = frase.length;
+    var soma = 0;
+    for (i = 0; i<size; i++){
+        if (frase[i] == 'a' || frase[i] == 'e' || frase[i] == 'i' || frase[i] == 'o' || frase[i] == 'u' ){
+            soma += 1;
+        }
+    }
+    return soma;
+}
+
+console.log(vogal("Quantas vogais?"));
+/////////////// EX3--- FIM!!!!! /////////////////////
+
+/////////////// EX4 /////////////////////
+function saber(frase,letra){
+    var size = frase.length;
+    var soma = 0;
+    for (i = 0; i < size; i++){
+        if(frase[i] == letra){
+            soma += 1;
+        }
+    }
+    return soma;
+}
+
+console.log(saber("Quantas vezes repete?", "e"));
+/////////////// EX4--- FIM!!!!! /////////////////////
+
+/////////////// EX5 /////////////////////
+function trabalho(entrada,saida){
+    if (entrada < 8 || entrada > 18 || saida > 18 || saida < 8 || entrada > saida){
+        return "Erro";
+    }else{
+        var calculo = 0;
+        calculo = saida - entrada;
+        return calculo;
+    }
+}
+
+
+console.log(trabalho(9,18));
+/////////////// EX5--- FIM!!!!! /////////////////////
+
+/////////////// EX6 /////////////////////
+function retangulo(largura,altura){
+    for (i = 0; i < altura; i++){
+        var desenho = "";
+        for (x = 0; x < largura; x++){
+            desenho += "*";
+        }
+        console.log(desenho);
+    }
+}
+
+retangulo(20,10);
+/////////////// EX6--- FIM!!!!! /////////////////////
+
+/////////////// EX7 /////////////////////
+function triangulo(altura){
+    var desenho = "";
+    for (i = 0; i < altura; i++){
+        desenho += "*";
+        console.log(desenho);
+    }
+}
+
+triangulo(10);
+/////////////// EX7--- FIM!!!!! /////////////////////
+
+/////////////// EX8 /////////////////////
+function desenho(lado) {
+    var full = "";
+    for (i = 0; i < lado; i++) {
+        full += "*";
+    }
+    console.log(full);
+    for (c = 0; c < lado; c++) {
+        var mid_empty = "*";
+        for (x = 0; x < lado - 2; x++) {
+            mid_empty += " ";
+            if (x == lado - 3) {
+                mid_empty += "*";
+            }
+        }
+        console.log(mid_empty);
+    }
+    console.log(full);
+}
+desenho(10);
+/////////////// EX8--- FIM!!!!! /////////////////////
+
+/////////////// EX9 /////////////////////
 function aluno(nome, nota1, nota2) {
     this.name = nome;
     this.notas = [nota1, nota2];
@@ -129,3 +252,4 @@ function operacao(opt, turma) {
 }
 
 console.log(operacao('b', turma));
+/////////////// EX9--- FIM!!!!! /////////////////////
