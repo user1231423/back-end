@@ -1,36 +1,25 @@
-function trabalho(entrada,saida){
-    var horas_entrada = entrada.split(':');
-    var horas_saida = saida.split(':');
+function trabalho(entrada, saida) {
+    var horaInicio = entrada.split(":"); //Split starting hours
+    var horaSaida = saida.split(":"); //Split finishing hours
 
-    var enter = new Date();
-    enter.setHours(horas_entrada[0]);
-    enter.setMinutes(horas_entrada[1]);
-    enter.setSeconds(horas_entrada[2]);
+    //Create 2 variables to set as the starting hour and ending
+    hora1 = new Date();
+    hora2 = new Date();
 
-    var exit = new Date();
-    exit.setHours(horas_saida[0]);
-    exit.setMinutes(horas_saida[1]);
-    exit.setSeconds(horas_saida[2]);
+    //Filling the variables with data from the splited string
+    hora1.setHours(horaInicio[0], horaInicio[1], horaInicio[2]); //Starting hour
+    hora2.setHours(horaSaida[0], horaSaida[1], horaSaida[2]); //Ending hour
 
-    var retornar = new Date();
-    var horas_trabalhadas = exit.getHours() - enter.getHours();
-    retornar.setHours(horas_trabalhadas);
+    ///Still working on this condition -------------- working hours only between 8:00:00 and 18:00:00
+    if (hora1.getHours() < 8 || hora1.getHours() > 18 || hora2.getHours() > 18 || hora1.getHours() < 8 || hora1.getHours() > hora2.getHours()) {
+        console.log("Erro");
+    } else {
+        var difference = new Date(); //New variable this will be the hours difference or the hours worked
 
-    var minutosTrabalho = exit.getMinutes() + enter.getMinutes();
-    if (minutosTrabalho <= 59){
-        retornar.setMinutes(minutosTrabalho);
-    }else if (minutosTrabalho == 60){
-        retornar.setHours(horas_trabalhadas + 1);
-    }else{
-        var min = minutosTrabalho / 60;
-        var string_min = min.toString();
-        var string_min_splited = string_min.split('.');
-        console.log(string_min_splited);
-        retornar.setHours(retornar.getHours() + 1);
-
+        //difference equals to ending hours - starting hours at the end we get the amout of time worked
+        difference.setHours(hora2.getHours() - hora1.getHours(), hora2.getMinutes() - hora1.getMinutes(), hora2.getSeconds() - hora1.getSeconds());
+        console.log(difference.getHours(), ':', difference.getMinutes(), ':', difference.getSeconds());
     }
-
 }
 
-
-trabalho('9:45:00','18:45:00');
+trabalho('8:01:10', '17:59:20');

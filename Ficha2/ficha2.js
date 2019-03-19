@@ -1,26 +1,26 @@
 /////////////// EX1 /////////////////////
-function imc(peso,altura) {
-    var massa = peso/Math.pow(altura,2);
-    if (massa < 18.5){
+function imc(peso, altura) {
+    var massa = peso / Math.pow(altura, 2);
+    if (massa < 18.5) {
         console.log("Abaixo do peso-> ", massa);
-    }else if(massa > 18.5 && massa < 25){
+    } else if (massa > 18.5 && massa < 25) {
         console.log("No peso normal-> ", massa);
-    }else if(massa > 25 && massa < 30){
+    } else if (massa > 25 && massa < 30) {
         console.log("Acima do peso-> ", massa);
-    }else{
+    } else {
         console.log("Obeso-> ", massa);
     }
 }
-imc(70,1.75);
+imc(70, 1.75);
 /////////////// EX1--- FIM!!!!! /////////////////////
 
 /////////////// EX2 /////////////////////
 function reverse(palavra) {
     var splited = palavra.split(" ");
-    var reversed = " ";
-    for (var i = 0; i < splited.length; i++ ){
-        var size  = splited[i].length;
-        for (x = size-1; x >= 0; x--){
+    var reversed = "";
+    for (var i = 0; i < splited.length; i++) {
+        var size = splited[i].length;
+        for (x = size - 1; x >= 0; x--) {
             reversed += splited[i][x];
         }
         reversed += " ";
@@ -35,8 +35,8 @@ console.log(reverse("Imprime ao contrario"));
 function vogal(frase) {
     var size = frase.length;
     var soma = 0;
-    for (i = 0; i<size; i++){
-        if (frase[i] == 'a' || frase[i] == 'e' || frase[i] == 'i' || frase[i] == 'o' || frase[i] == 'u' ){
+    for (i = 0; i < size; i++) {
+        if (frase[i] == 'a' || frase[i] == 'e' || frase[i] == 'i' || frase[i] == 'o' || frase[i] == 'u') {
             soma += 1;
         }
     }
@@ -47,11 +47,11 @@ console.log(vogal("Quantas vogais?"));
 /////////////// EX3--- FIM!!!!! /////////////////////
 
 /////////////// EX4 /////////////////////
-function saber(frase,letra){
+function saber(frase, letra) {
     var size = frase.length;
     var soma = 0;
-    for (i = 0; i < size; i++){
-        if(frase[i] == letra){
+    for (i = 0; i < size; i++) {
+        if (frase[i] == letra) {
             soma += 1;
         }
     }
@@ -62,38 +62,51 @@ console.log(saber("Quantas vezes repete?", "e"));
 /////////////// EX4--- FIM!!!!! /////////////////////
 
 /////////////// EX5 /////////////////////
-function trabalho(entrada,saida){
-    if (entrada < 8 || entrada > 18 || saida > 18 || saida < 8 || entrada > saida){
-        return "Erro";
-    }else{
-        var calculo = 0;
-        calculo = saida - entrada;
-        return calculo;
+function trabalho(entrada, saida) {
+    var horaInicio = entrada.split(":"); //Split starting hours
+    var horaSaida = saida.split(":"); //Split finishing hours
+
+    //Create 2 variables to set as the starting hour and ending
+    hora1 = new Date();
+    hora2 = new Date();
+
+    //Filling the variables with data from the splited string
+    hora1.setHours(horaInicio[0], horaInicio[1], horaInicio[2]); //Starting hour
+    hora2.setHours(horaSaida[0], horaSaida[1], horaSaida[2]); //Ending hour
+
+    ///Still working on this condition -------------- working hours only between 8:00:00 and 18:00:00
+    if (hora1.getHours() < 8 || hora1.getHours() > 18 || hora2.getHours() > 18 || hora1.getHours() < 8 || hora1.getHours() > hora2.getHours()) {
+        console.log("Erro");
+    } else {
+        var difference = new Date(); //New variable this will be the hours difference or the hours worked
+
+        //difference equals to ending hours - starting hours at the end we get the amout of time worked
+        difference.setHours(hora2.getHours() - hora1.getHours(), hora2.getMinutes() - hora1.getMinutes(), hora2.getSeconds() - hora1.getSeconds());
+        console.log(difference.getHours(), ':', difference.getMinutes(), ':', difference.getSeconds());
     }
 }
 
-
-console.log(trabalho(9,18));
+trabalho('8:01:10', '17:59:20');
 /////////////// EX5--- FIM!!!!! /////////////////////
 
 /////////////// EX6 /////////////////////
-function retangulo(largura,altura){
-    for (i = 0; i < altura; i++){
+function retangulo(largura, altura) {
+    for (i = 0; i < altura; i++) {
         var desenho = "";
-        for (x = 0; x < largura; x++){
+        for (x = 0; x < largura; x++) {
             desenho += "*";
         }
         console.log(desenho);
     }
 }
 
-retangulo(20,10);
+retangulo(20, 10);
 /////////////// EX6--- FIM!!!!! /////////////////////
 
 /////////////// EX7 /////////////////////
-function triangulo(altura){
+function triangulo(altura) {
     var desenho = "";
-    for (i = 0; i < altura; i++){
+    for (i = 0; i < altura; i++) {
         desenho += "*";
         console.log(desenho);
     }
@@ -154,12 +167,12 @@ function melhor_nota(turma) { //get the best grade
             }
         }
     }
-    if (num_melhor.length > 1){
+    if (num_melhor.length > 1) {
         console.log("Melhores Notas:");
-        for (i = 0; i < num_melhor.length; i++){
+        for (i = 0; i < num_melhor.length; i++) {
             console.log(turma[num_melhor[i]].name, "-> ", turma[num_melhor[i]].notas[num_nota[i]]);
         }
-    }else{
+    } else {
         console.log("Melhor Nota:");
         console.log(turma[num_melhor[0]].name, "-> ", turma[num_melhor[0]].notas[num_nota]);
     }
@@ -178,33 +191,33 @@ function pior_nota(turma) { //get the worst grade
             }
         }
     }
-    if (num_pior.length > 1){
+    if (num_pior.length > 1) {
         console.log("Piores notas:");
-        for (i = 0; i < num_pior.length; i++){
+        for (i = 0; i < num_pior.length; i++) {
             console.log(turma[num_pior[i]].name, "-> ", turma[num_pior[i]].notas[num_nota[i]]);
         }
-    }else{
+    } else {
         console.log("A pior Nota no foi de: ", turma[num_pior[0]].name, "-> ", turma[num_pior[0]].notas[num_nota[0]]);
     }
 }
 
 ////////////// Get the average and then the closest grade to the average ////////////////
-function media(turma){
+function media(turma) {
     var soma = 0;
     var quantas_foram = 0;
-    for (i = 0; i < turma.length; i++){
-        for (x = 0; x < 2; x++){
+    for (i = 0; i < turma.length; i++) {
+        for (x = 0; x < 2; x++) {
             soma += turma[i].notas[x];
             quantas_foram += 1;
         }
     }
-    var media = soma/quantas_foram /// Get the average value
+    var media = soma / quantas_foram /// Get the average value
     var devolve = 0;
     var diff = 21; /// set the min  difference
-    for (i = 0; i < turma.length; i++){
-        for (x = 0; x < 2; x++){
+    for (i = 0; i < turma.length; i++) {
+        for (x = 0; x < 2; x++) {
             var closest = Math.abs(media - turma[i].notas[x]);
-            if (closest < diff){
+            if (closest < diff) {
                 diff = closest; //// if closest value < difference devolve gets the value of the current grade
                 devolve = turma[i].notas[x];
             }
@@ -217,11 +230,11 @@ function media(turma){
 /// Negative grades only/////
 function negativas(turma) {
     var negativas = [];
-    for (i = 0; i < turma.length; i++){
-        for (x = 0; x < turma.length; x++){
-            if (turma[i].notas[x] < 9.5){
+    for (i = 0; i < turma.length; i++) {
+        for (x = 0; x < turma.length; x++) {
+            if (turma[i].notas[x] < 9.5) {
                 negativas.push(turma[i].notas[x]);
-                console.log(turma[i].name, "Obteve: ",turma[i].notas[x]);
+                console.log(turma[i].name, "Obteve: ", turma[i].notas[x]);
             }
         }
     }
@@ -231,11 +244,11 @@ function negativas(turma) {
 ///// Numero de positivas ///////
 function positivas(turma) {
     var positivas = [];
-    for (i = 0; i < turma.length; i++){
-        for (x = 0; x < turma.length; x++){
-            if (turma[i].notas[x] >= 9.5){
+    for (i = 0; i < turma.length; i++) {
+        for (x = 0; x < turma.length; x++) {
+            if (turma[i].notas[x] >= 9.5) {
                 positivas.push(turma[i].notas[x]);
-                console.log(turma[i].name, "Obteve: ",turma[i].notas[x]);
+                console.log(turma[i].name, "Obteve: ", turma[i].notas[x]);
             }
         }
     }
@@ -243,27 +256,27 @@ function positivas(turma) {
 }
 
 function operacao(opt, turma) {
-    if (opt == 'a'){
+    if (opt == 'a') {
         imprimir(turma);
 
-    }else if (opt == 'b') {
+    } else if (opt == 'b') {
         melhor_nota(turma);
 
-    }else if(opt == 'c') {
+    } else if (opt == 'c') {
         pior_nota(turma);
 
-    }else if(opt == 'd'){
+    } else if (opt == 'd') {
         media(turma);
 
-    }else if(opt == 'e') {
+    } else if (opt == 'e') {
         media(turma);
 
-    }else if(opt == 'f'){
+    } else if (opt == 'f') {
         negativas(turma);
 
-    }else if(opt == 'g'){
+    } else if (opt == 'g') {
         positivas(turma);
-    }else{
+    } else {
         return "Erro";
     }
 }
