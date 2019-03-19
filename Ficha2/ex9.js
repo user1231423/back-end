@@ -3,7 +3,7 @@ function aluno(nome, nota1, nota2) {
     this.notas = [nota1, nota2];
 }
 
-var aluno1 = new aluno("João", 20, 10); //Creating new aluno
+var aluno1 = new aluno("João", 20, 20); //Creating new aluno
 var aluno2 = new aluno("Alberto", 2, 10); //Creating new aluno
 
 var turma = [aluno1, aluno2]; //Creating array containing the aluno's previously created
@@ -141,4 +141,4 @@ function operacao(opt, turma) {
     }
 }
 
-console.log(operacao('c', turma));
+operacao('b', turma);

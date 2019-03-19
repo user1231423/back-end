@@ -268,5 +268,5 @@ function operacao(opt, turma) {
     }
 }
 
-console.log(operacao('c', turma));
+operacao('c', turma);
 /////////////// EX9--- FIM!!!!! /////////////////////
