@@ -16,10 +16,14 @@ imc(70,1.75);
 
 /////////////// EX2 /////////////////////
 function reverse(palavra) {
-    var size  = palavra.length;
-    var reversed = "";
-    for (var i = size-1; i >= 0; i-- ){
-        reversed += palavra[i];
+    var splited = palavra.split(" ");
+    var reversed = " ";
+    for (var i = 0; i < splited.length; i++ ){
+        var size  = splited[i].length;
+        for (x = size-1; x >= 0; x--){
+            reversed += splited[i][x];
+        }
+        reversed += " ";
     }
     return reversed;
 }
