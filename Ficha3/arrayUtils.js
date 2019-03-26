@@ -8,7 +8,7 @@ var arrayFunctions = {
     },
     max: function (array) {
         if (arrayFunctions.isEmpty(array)) {
-            return;
+            return "ERRO!";
         } else {
             var maximo = array[0]; //Set 1st value as maximo
             for (var i = 0; i < array.length; i++) { //Go through the entire array to find if there is numbers > than maximo
@@ -21,7 +21,7 @@ var arrayFunctions = {
     },
     min: function (array) {
         if (arrayFunctions.isEmpty(array)) {
-            return;
+            return "ERRO!";
         } else {
             var minimo = array[0];//Set 1st value as minimo
             for (var i = 0; i < array.length; i++) {//Go through the entire array to find if there is numbres < than minimo
@@ -34,7 +34,7 @@ var arrayFunctions = {
     },
     average: function (array) {
         if (arrayFunctions.isEmpty(array)) {
-            return;
+            return "ERRO!";
         } else {
             var soma = 0; //Set soma to 0
             for (var i = 0; i < array.length; i++) { //Go throught the entire array and sum all the values
@@ -45,14 +45,14 @@ var arrayFunctions = {
     },
     indexOf: function (array, value) {
         if (arrayFunctions.isEmpty(array)) {
-            return;
+            return "ERRO!";
         } else {
             return array[value];//Simply return the value of the position given
         }
     },
     subArray: function (array, startIndex, endIndex) {
         if (arrayFunctions.isEmpty(array)) {
-            return;
+            return "ERRO!";
         } else {
             var sub_array = [];//Set sub_array to an empty array
             for (var i = startIndex; i <= endIndex; i++) {//Start the for in the start index and end it on the end index
@@ -63,7 +63,7 @@ var arrayFunctions = {
     },
     isSameLenght: function (array1, array2) {
         if (arrayFunctions.isEmpty(array)) {
-            return;
+            return "ERRO!";
         } else {
             if (array1.length == array2.length) {//Just check if sizes match or not
                 return true;
@@ -74,7 +74,7 @@ var arrayFunctions = {
     },
     reverse: function (array) {
         if (arrayFunctions.isEmpty(array)) {
-            return;
+            return "ERRO!";
         } else {
             var reverseArray = [];
             for (var i = array.length - 1; i >= 0; i--) {//Start going throught the array from the last position ultil the first
@@ -85,7 +85,7 @@ var arrayFunctions = {
     },
     swap: function (array, index1, index2) {
         if (arrayFunctions.isEmpty(array)) {
-            return;
+            return "ERRO!";
         } else {
             var guarda = array[index1]; //Save the value on the index1 because he will be deleted after getting the value of the index2
             array[index1] = array[index2];//Set index1 to index2
@@ -95,7 +95,7 @@ var arrayFunctions = {
     },
     contains: function (array, value) {
         if (arrayFunctions.isEmpty(array)) {
-            return;
+            return "ERRO!";
         } else {
             var contain = false;
             for (var i = 0; i < array.length; i++) {//Go throught the entire array

@@ -20,7 +20,7 @@ function performDownload(started, update, completed){
 
 //performDownload(started,update,completed);
 var arrayUtils = require('./arrayUtils');
-var array = [1,2,3,4,5,6,7,8,9,10];
+var array = [];
 var array2 = [1,2,3,4,5,6,7,8,9];
 //console.log(arrayUtils.isEmpty(array));
 console.log(arrayUtils.max(array));
