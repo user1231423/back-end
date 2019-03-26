@@ -7,7 +7,7 @@ var arrayFunctions = {
         }
     },
     max: function (array) {
-        if (arrayFunctions.isEmpty(array)) {
+        if (this.isEmpty(array)) {
             return "ERRO!";
         } else {
             var maximo = array[0]; //Set 1st value as maximo
@@ -20,7 +20,7 @@ var arrayFunctions = {
         }
     },
     min: function (array) {
-        if (arrayFunctions.isEmpty(array)) {
+        if (this.isEmpty(array)) {
             return "ERRO!";
         } else {
             var minimo = array[0];//Set 1st value as minimo
@@ -33,7 +33,7 @@ var arrayFunctions = {
         }
     },
     average: function (array) {
-        if (arrayFunctions.isEmpty(array)) {
+        if (this.isEmpty(array)) {
             return "ERRO!";
         } else {
             var soma = 0; //Set soma to 0
@@ -44,14 +44,14 @@ var arrayFunctions = {
         }
     },
     indexOf: function (array, value) {
-        if (arrayFunctions.isEmpty(array)) {
+        if (this.isEmpty(array)) {
             return "ERRO!";
         } else {
             return array[value];//Simply return the value of the position given
         }
     },
     subArray: function (array, startIndex, endIndex) {
-        if (arrayFunctions.isEmpty(array)) {
+        if (this.isEmpty(array)) {
             return "ERRO!";
         } else {
             var sub_array = [];//Set sub_array to an empty array
@@ -62,7 +62,7 @@ var arrayFunctions = {
         }
     },
     isSameLenght: function (array1, array2) {
-        if (arrayFunctions.isEmpty(array)) {
+        if (this.isEmpty(array)) {
             return "ERRO!";
         } else {
             if (array1.length == array2.length) {//Just check if sizes match or not
@@ -73,7 +73,7 @@ var arrayFunctions = {
         }
     },
     reverse: function (array) {
-        if (arrayFunctions.isEmpty(array)) {
+        if (this.isEmpty(array)) {
             return "ERRO!";
         } else {
             var reverseArray = [];
@@ -84,7 +84,7 @@ var arrayFunctions = {
         }
     },
     swap: function (array, index1, index2) {
-        if (arrayFunctions.isEmpty(array)) {
+        if (this.isEmpty(array)) {
             return "ERRO!";
         } else {
             var guarda = array[index1]; //Save the value on the index1 because he will be deleted after getting the value of the index2
@@ -94,7 +94,7 @@ var arrayFunctions = {
         }
     },
     contains: function (array, value) {
-        if (arrayFunctions.isEmpty(array)) {
+        if (this.isEmpty(array)) {
             return "ERRO!";
         } else {
             var contain = false;
