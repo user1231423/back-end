@@ -47,7 +47,13 @@ var arrayFunctions = {
         if (this.isEmpty(array)) {
             return "ERRO!";
         } else {
-            return array[value];//Simply return the value of the position given
+            var index = -1;
+            for(var i = 0; i < array.length; i++){
+                if(array[i] == value){
+                    index = i;
+                }
+            }
+            return index;
         }
     },
     subArray: function (array, startIndex, endIndex) {
@@ -97,13 +103,11 @@ var arrayFunctions = {
         if (this.isEmpty(array)) {
             return "ERRO!";
         } else {
-            var contain = false;
-            for (var i = 0; i < array.length; i++) {//Go throught the entire array
-                if (array[i] == value) {//Check if the current value matches the value we want
-                    contain = true;//If it does set contain to true
-                }
+            if(this.indexOf(array,value) < 0){
+                return false;
+            }else{
+                return true;
             }
-            return contain;
         }
     }
 }
