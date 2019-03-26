@@ -103,11 +103,7 @@ var arrayFunctions = {
         if (this.isEmpty(array)) {
             return "ERRO!";
         } else {
-            if(this.indexOf(array,value) < 0){
-                return false;
-            }else{
-                return true;
-            }
+          return this.indexOf(array,value) != -1;
         }
     }
 }
