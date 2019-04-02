@@ -117,8 +117,6 @@ var arrayFunctions = {
             return arrayConcat;
         }
     }
-
-
 }
 
 module.exports = arrayFunctions;
