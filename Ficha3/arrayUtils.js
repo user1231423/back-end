@@ -103,7 +103,7 @@ var arrayFunctions = {
         if (this.isEmpty(array)) {
             return "ERRO!";
         } else {
-          return this.indexOf(array,value) != -1;
+          return this.indexOf(array,value) != -1; /// Retruns the index of the value if he exists
         }
     },
     concatenate: function (array1,array2) {
@@ -112,7 +112,7 @@ var arrayFunctions = {
         }
         else{
             var arrayConcat = [];
-            arrayConcat.push(array1,array2);
+            arrayConcat.push(array1,array2); //Add both arrays to the arrayConcat
 
             return arrayConcat;
         }
