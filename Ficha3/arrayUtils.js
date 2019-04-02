@@ -105,7 +105,15 @@ var arrayFunctions = {
         } else {
           return this.indexOf(array,value) != -1;
         }
+    },
+    concatenate: function (array1,array2) {
+        var arrayConcat = [];
+        arrayConcat.push(array1,array2);
+
+        return arrayConcat;
     }
+
+
 }
 
 module.exports = arrayFunctions;
