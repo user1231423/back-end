@@ -107,10 +107,15 @@ var arrayFunctions = {
         }
     },
     concatenate: function (array1,array2) {
-        var arrayConcat = [];
-        arrayConcat.push(array1,array2);
+        if (this.isEmpty(array1) || this.isEmpty(array2)){
+            return "ERRO!";
+        }
+        else{
+            var arrayConcat = [];
+            arrayConcat.push(array1,array2);
 
-        return arrayConcat;
+            return arrayConcat;
+        }
     }
 
 
