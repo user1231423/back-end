@@ -1,22 +1,23 @@
 function Emitter() {
-    var events = {};
+    this.events = {};
 }
 
 Emitter.prototype.on = function(type,listener){
     if (this.events[type] == undefined){
         this.events[type] = [];
+        this.events[type].push(listener);
     } else{
         this.events[type].push(listener);
     }
 }
 
 Emitter.prototype.emit = function(type){
-    if(this.events[type] == undefined){
-        return "Utilize o on primeiro!"; //Id does not exist return error
-    }else{
+    if(this.events[type] != undefined){
         this.events[type].forEach(function(element){ //Call each element inside the current type
-            return element();
+            element();
         });
+    } else{
+        return "Error";
     }
 }
 

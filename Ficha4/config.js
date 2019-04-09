@@ -1,6 +1,6 @@
-module.exports = {
-    eventos: {
-        PRIMEIRO: 'Ola',
-        SEGUNDO: 'Adeus'
-    }
+var eventos = {
+    PRIMEIRO: 'Start',
+    SEGUNDO: 'Stop'
 }
+
+module.exports = eventos;
