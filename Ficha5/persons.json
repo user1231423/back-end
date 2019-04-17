@@ -1,18 +1,20 @@
 {
-    "person1" : {
-        "id" : "1",
-        "firstName" : "John",
-        "lastName" : "Doe",
-        "gender" : "M",
-        "age" : "25",
-        "profession" : "MCDonald's worker"
-    },
-    "person2" : {
-        "id" : "2",
-        "firstName" : "Jane",
-        "lastName" : "Doe",
-        "gender" : "F",
-        "age" : "21",
-        "profession" : "Burguer King worker"
-    }
+    "persons":[
+        {
+            "id":1,
+            "firstName":"John",
+            "lastName":"Doe",
+            "gender":"M",
+            "age":"25",
+            "profession":"MCDonald's worker"
+        },
+        {
+            "id":2,
+            "firstName":"Jane",
+            "lastName":"Doe",
+            "gender":"F",
+            "age":"21",
+            "profession":"BK worker"
+        }
+    ]
 }
