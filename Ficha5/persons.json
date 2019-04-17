@@ -5,7 +5,7 @@
             "firstName":"John",
             "lastName":"Doe",
             "gender":"M",
-            "age":"25",
+            "age":25,
             "profession":"MCDonald's worker"
         },
         {
@@ -13,7 +13,7 @@
             "firstName":"Jane",
             "lastName":"Doe",
             "gender":"F",
-            "age":"21",
+            "age":21,
             "profession":"BK worker"
         }
     ]

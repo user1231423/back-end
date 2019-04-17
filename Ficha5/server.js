@@ -8,6 +8,7 @@ function readFile(fileName){
     return file;
 }
 
+//Get the index of for given id's inside persons array
 function getIndex(obj,id,size){
     var index;
     for (var i = 0; i <= size; i++){
@@ -32,7 +33,7 @@ app.get('/users', function(req,res){
 app.post('/new', function (req, res) {
     var file = readFile('./persons.json');
     var obj = JSON.parse(file); //Json to js Object
-    var size = Object.keys(obj).length; //Get the size of the object
+    var size = obj.persons.length - 1; //Get the size of the object
     var newId = obj.persons[size].id + 1; //New id = last person id + 1
     //Create new person
     var newPerson = {
@@ -55,6 +56,7 @@ app.post('/new', function (req, res) {
     res.send('New user added'); //Return message new user added
 });
 
+//Delete user from given id
 app.delete('/user/:id', function (req, res) {
     var id = req.params.id
     var file = readFile('./persons.json');
@@ -67,6 +69,17 @@ app.delete('/user/:id', function (req, res) {
     var strObj = JSON.stringify(obj);
     fs.writeFileSync('./persons.json',strObj); //Write json file
     res.send('User deleted');
-  });
+});
+
+//See user info from given id
+app.get('/user/:id', function(req,res){
+    var id = req.params.id; //Get id from params
+    var file = readFile('./persons.json');
+    var obj = JSON.parse(file);
+
+    var size = obj.persons.length - 1;
+    var index = getIndex(obj,id,size); //Get index of the given id
+    res.json(obj.persons[index]); //Send json object as response
+});
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
