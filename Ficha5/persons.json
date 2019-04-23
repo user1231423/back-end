@@ -1,20 +1,20 @@
 {
     "persons":[
         {
-            "id":1,
             "firstName":"John",
             "lastName":"Doe",
             "gender":"M",
             "age":25,
-            "profession":"MCDonald's worker"
+            "profession":"MCDonald's worker",
+            "id":1
         },
         {
-            "id":2,
             "firstName":"Jane",
             "lastName":"Doe",
             "gender":"F",
             "age":21,
-            "profession":"BK worker"
+            "profession":"BK worker",
+            "id":2
         }
     ]
 }
