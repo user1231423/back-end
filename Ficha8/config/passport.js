@@ -95,16 +95,16 @@ module.exports = function (passport) {
     },
         function (req, email, password, done) { // callback with email and password from our form
             var sql = "SELECT *  FROM users WHERE email = ? AND password = ?";
-            connection.query(sql,[email,password], function (error, results, fields) {
-                if (error){
+            connection.query(sql, [email, password], function (error, results, fields) {
+                if (error) {
                     throw error;
-                }else{
-                    if (Object.keys(results).length == 0){
-                        return done(null,false,{ message: req.flash('loginMessage','Email ou password errados!') })
-                    }else{
-                        return done(null,results[0]);
+                } else {
+                    if (Object.keys(results).length == 0) {
+                        return done(null, false, { message: req.flash('loginMessage', 'Email ou password errados!') })
+                    } else {
+                        return done(null, results[0]);
                     }
                 }
-            });                          
+            });
         }));
 };
