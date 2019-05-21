@@ -4,7 +4,13 @@ var mysql = require('mysql')
 var LocalStrategy = require('passport-local').Strategy;
 
 // MySQL connection
-
+var connection = mysql.createConnection({
+    host     : 'localhost',
+    user     : 'root',
+    password : '',
+    database : 'backend'
+  });
+  
 console.log("MySQL connection created at %s with database: %s", connection.config.host, connection.config.database);
 
 // expose this function to our app using module.exports
