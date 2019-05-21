@@ -1,0 +1,56 @@
+{
+    "photo1": {
+        "uploader": "alexandre",
+        "title": "just title",
+        "descripton": "not needed",
+        "size": 11,
+        "url": "something.com",
+        "likes": 440,
+        "dislikes": 444,
+        "comments": [
+            "1st comment",
+            "2nd comment"
+        ],
+        "tags": [
+            "no tags",
+            "not a tag"
+        ],
+        "id": "b60a6b10-7653-11e9-80a3-c324e4018878"
+    },
+    "photo2": {
+        "uploader": "joao",
+        "title": "another one",
+        "descripton": "not needed",
+        "size": 22,
+        "url": "url.com",
+        "likes": 40,
+        "dislikes": 44,
+        "comments": [
+            "1st comment",
+            "2nd comment"
+        ],
+        "tags": [
+            "tag2",
+            "tag8"
+        ],
+        "id": "b5677450-7653-11e9-8082-1af1229c2ee6"
+    },
+    "photo3": {
+        "uploader": "joao",
+        "title": "random title",
+        "descripton": "not needed",
+        "size": 33,
+        "url": "dot.com",
+        "likes": 40,
+        "dislikes": 44,
+        "comments": [
+            "1st comment",
+            "2nd comment"
+        ],
+        "tags": [
+            "tag1",
+            "tag2"
+        ],
+        "id": "09484620-7655-11e9-810c-8374ba723731"
+    }
+}
