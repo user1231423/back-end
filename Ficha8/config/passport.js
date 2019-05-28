@@ -24,7 +24,7 @@ module.exports = function (passport) {
 
     // used to serialize the user for the session
     passport.serializeUser(function (user, done) {
-        done(null, user.id);
+        return done(null, user.id);
     });
 
     // used to deserialize the user
@@ -33,9 +33,9 @@ module.exports = function (passport) {
         var sql = "SELECT * FROM users WHERE id = " + id;
         connection.query(sql, function (error, results, fields) {
             if (error) {
-                throw error;
+                return done(error);
             } else {
-                done(error, results[0]);
+                return done(error, results[0]);
             }
         });
     });
@@ -57,18 +57,18 @@ module.exports = function (passport) {
             var sql = "SELECT * FROM users WHERE email = ?";
             connection.query(sql, [email], function (error, results, fields) {
                 if (error) {
-                    throw error;
+                    return done(error);
                 } else if (Object.keys(results).length == 0) { //IF = 0 means it didn't return anything so it does not exist so we will create that user ->
                     var sql = "INSERT INTO users SET email = ?, password = ?";
                     connection.query(sql, [email, password], function (error, results, fields) { //Execute sql query and add data into the table users
                         if (error) {
-                            throw error;
+                            return done(error);
                         } else {
                             var userId = results.insertId;
                             var sql = "SELECT * FROM users WHERE id = " + userId;
                             connection.query(sql, function (error, results, fields) {
                                 if (error) {
-                                    throw error;
+                                    return done(error);
                                 } else {
                                     var user = results[0];
                                 }
@@ -97,7 +97,7 @@ module.exports = function (passport) {
             var sql = "SELECT *  FROM users WHERE email = ? AND password = ?";
             connection.query(sql, [email, password], function (error, results, fields) {
                 if (error) {
-                    throw error;
+                    return done(error);
                 } else {
                     if (Object.keys(results).length == 0) {
                         return done(null, false, { message: req.flash('loginMessage', 'Email ou password errados!') })
