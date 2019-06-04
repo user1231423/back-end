@@ -17,7 +17,7 @@ exports.author_detail = function(req, res, next) {
         if (Object.keys(results).length == 0) {
             res.send("Utilizador não existe");
         } else {
-            res.json(results[0]);
+            res.render('person', {title: "Person Detail", person: results[0]});
         }
     })
 };
