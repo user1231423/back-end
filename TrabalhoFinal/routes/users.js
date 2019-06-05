@@ -7,9 +7,10 @@ require('../controllers/passport')(passport);
 router.use(passport.initialize());
 router.use(passport.session());
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {});
+/* GET profile request, only allows to visit if user is authenticated */
+router.get('/profile', isLoggedIn, function(req, res, next) {});
 
+/* POST login request, uses passport to authenticate user and start session*/
 router.post('/login', function(req, res, next) {
     passport.authenticate('local-login', function(err, user, info) {
         if (err) {
@@ -31,3 +32,13 @@ router.post('/login', function(req, res, next) {
 });
 
 module.exports = router;
+
+// route middleware to make sure a user is logged in
+function isLoggedIn(req, res, next) {
+    // if user is authenticated in the session, carry on 
+    if (req.isAuthenticated())
+        return next();
+
+    // if they aren't send response
+    res.send('Login First');
+}
