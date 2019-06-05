@@ -20,7 +20,7 @@ router.get('/', function(req, res, next) {
 // =========================================================================
 // GET /home, loads the home page after login ==============================
 // =========================================================================
-router.get('/home', function(req, res, next) {
+router.get('/home', isAuthenticated, function(req, res, next) {
     res.json({
         message: "Welcome Home after login!"
     })
