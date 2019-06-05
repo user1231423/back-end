@@ -33,6 +33,16 @@ router.get('/profile', authMiddleware, function(req, res, next, ) {
     res.json({ user: req.user });
 });
 
+// =========================================================================
+// GET /logout, requests logout user, this clears the session ==============
+// =========================================================================
+router.get('/logout', authMiddleware, function(req, res, next) {
+    req.logOut();
+    res.json({
+        logged: false
+    });
+});
+
 module.exports = router;
 
 //Check if user is authenticated

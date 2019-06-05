@@ -1,14 +1,5 @@
-var mysql = require('mysql')
-    // load all the things we need
 var LocalStrategy = require('passport-local').Strategy;
-
-// MySQL connection
-var connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'projeto'
-});
+var connection = require('../assets/db/connect');
 
 console.log("MySQL connection created at %s with database: %s", connection.config.host, connection.config.database);
 
