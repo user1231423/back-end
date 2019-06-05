@@ -30,6 +30,7 @@ module.exports = router;
 
 //Check if user is authenticated
 function authMiddleware(req, res, next) {
+    console.log("user: ", req.user);
     console.log(req.isAuthenticated());
     if (req.isAuthenticated()) {
         return next();
