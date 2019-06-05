@@ -1,4 +1,3 @@
-// config/passport.js
 var mysql = require('mysql')
     // load all the things we need
 var LocalStrategy = require('passport-local').Strategy;
@@ -8,7 +7,7 @@ var connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: '',
-    database: 'backend'
+    database: 'test'
 });
 
 console.log("MySQL connection created at %s with database: %s", connection.config.host, connection.config.database);
@@ -102,11 +101,9 @@ module.exports = function(passport) {
                     if (Object.keys(results).length == 0) {
                         return done(null, false);
                     } else {
-                        console.log(results[0]);
                         return done(null, results[0]);
                     }
                 }
             });
-
         }));
 };
