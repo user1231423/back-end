@@ -7,38 +7,64 @@ require('../controllers/passport')(passport);
 router.use(passport.initialize());
 router.use(passport.session());
 
-/* GET profile request, only allows to visit if user is authenticated */
-router.get('/profile', isLoggedIn, function(req, res, next) {});
-
-/* POST login request, uses passport to authenticate user and start session*/
+// =========================================================================
+// POST /login , uses passport to authenticate user and start session ======
+// =========================================================================
 router.post('/login', function(req, res, next) {
     passport.authenticate('local-login', function(err, user, info) {
         if (err) {
             return next(err);
         } else {
             if (!user) {
-                return res.redirect('/login');
+                return res.status(200).json({ logged : false });
             }
         }
         req.logIn(user, function(err) {
-            console.log(user);
             if (err) {
                 return next(err);
             } else {
-                return res.status(200).json({ logged: true });
+                return res.status(200).json({ logged : true });
             }
         });
     })(req, res, next);
 });
 
+// =========================================================================
+// POST /signup , uses passport to sign up user ============================
+// =========================================================================
+router.post('/signup', function(req, res, next) {
+    passport.authenticate('local-signup', function(err, user, info) {
+        if (err) {
+            return next(err);
+        } else {
+            if (!user) {
+                return res.status(200).json({ logged : false });
+            }
+        }
+        req.logIn(user, function(err) {
+            if (err) {
+                return next(err);
+            } else {
+                return res.status(200);
+            }
+        });
+    })(req, res, next);
+});
+
+// =========================================================================
+// GET /profile, loads user data and sends to client =======================
+// =========================================================================
+router.get('/profile', authMiddleware ,function (req, res, next) {
+    var user = req.session.passport.user;
+    res.json({user: user});
+  });
+
 module.exports = router;
 
-// route middleware to make sure a user is logged in
-function isLoggedIn(req, res, next) {
-    // if user is authenticated in the session, carry on 
-    if (req.isAuthenticated())
+const authMiddleware = function(req,res,next){
+    if (!req.isAuthenticated()){
+        res.status(401).send("Não está autenticado!");
+    }else{
         return next();
-
-    // if they aren't send response
-    res.send('Login First');
+    }
 }

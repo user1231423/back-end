@@ -7,7 +7,7 @@ var connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: '',
-    database: 'test'
+    database: 'backend'
 });
 
 console.log("MySQL connection created at %s with database: %s", connection.config.host, connection.config.database);
@@ -15,15 +15,16 @@ console.log("MySQL connection created at %s with database: %s", connection.confi
 // expose this function to our app using module.exports
 module.exports = function(passport) {
 
-    // =========================================================================
-    // passport session setup ==================================================
-    // =========================================================================
+// =========================================================================
+// passport session setup ==================================================
+// =========================================================================
+
     // required for persistent login sessions
     // passport needs ability to serialize and unserialize users out of session
 
     // used to serialize the user for the session
     passport.serializeUser(function(user, done) {
-        return done(null, user.Id);
+        return done(null, user.id);
     });
 
     // used to deserialize the user
@@ -39,11 +40,9 @@ module.exports = function(passport) {
         });
     });
 
-    // =========================================================================
-    // LOCAL SIGNUP ============================================================
-    // =========================================================================
-    // we are using named strategies since we have one for login and one for signup
-    // by default, if there was no name, it would just be called 'local'
+// =========================================================================
+// LOCAL SIGNUP ============================================================
+// =========================================================================
     passport.use('local-signup', new LocalStrategy({
             // by default, local strategy uses username and password, we will override with email
             usernameField: 'email',
@@ -51,15 +50,21 @@ module.exports = function(passport) {
             passReqToCallback: true // allows us to pass back the entire request to the callback
         },
         function(req, email, password, done) {
-            // find a user whose email is the same as the forms email
+
+            //Require data from body needed to register user
+            var newUser = {
+                firstName: req.body.firstName,
+            }
+
+            // find a user whose email is the same as the form email
             // we are checking to see if the user trying to login already exists 
             var sql = "SELECT * FROM users WHERE email = ?";
             connection.query(sql, [email], function(error, results, fields) {
                 if (error) {
                     return done(error);
                 } else if (Object.keys(results).length == 0) { //IF = 0 means it didn't return anything so it does not exist so we will create that user ->
-                    var sql = "INSERT INTO users SET email = ?, password = ?";
-                    connection.query(sql, [email, password], function(error, results, fields) { //Execute sql query and add data into the table users
+                    var sql = "INSERT INTO users SET email = ?, password = ?, name = ?";
+                    connection.query(sql, [email, password, newUser.firstName], function(error, results, fields) { //Execute sql query and add data into the table users
                         if (error) {
                             return done(error);
                         } else {
@@ -67,25 +72,23 @@ module.exports = function(passport) {
                             var sql = "SELECT * FROM users WHERE id = " + userId;
                             connection.query(sql, function(error, results, fields) {
                                 if (error) {
-                                    return done(error);
+                                    return done(error); //In case of error return the error or error
                                 } else {
-                                    var user = results[0];
+                                    var user = results[0]; //Set user equal to results[0]
                                 }
-                                return done(null, user);
+                                return done(null, user); //Returns no error and user that was just registed
                             });
                         }
                     });
                 } else {
-                    return done(null, false);
+                    return done(null, false); //Does not return error or user
                 }
             });
         }));
 
-    // =========================================================================
-    // LOCAL LOGIN =============================================================
-    // =========================================================================
-    // we are using named strategies since we have one for login and one for signup
-    // by default, if there was no name, it would just be called 'local'
+// =========================================================================
+// LOCAL LOGIN =============================================================
+// =========================================================================
     passport.use('local-login', new LocalStrategy({
             // by default, local strategy uses username and password, we will override with email
             usernameField: 'email',
@@ -94,7 +97,7 @@ module.exports = function(passport) {
         },
         function(req, email, password, done) { // callback with email and password from our form
             var sql = "SELECT *  FROM users WHERE email = ? AND password = ?";
-            connection.query(sql, [email, password], function(error, results, fields) {
+            connection.query(sql, [email, password], function(error, results, fields) { //Execute sql query to select all from 
                 if (error) {
                     return done(error);
                 } else {
