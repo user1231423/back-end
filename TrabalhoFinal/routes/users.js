@@ -2,11 +2,6 @@ var express = require('express');
 var router = express.Router();
 var passport = require('passport');
 
-//Passport configuration
-require('../controllers/passport')(passport);
-router.use(passport.initialize());
-router.use(passport.session());
-
 // =========================================================================
 // POST /login , uses passport to authenticate user and start session ======
 // =========================================================================
@@ -16,16 +11,17 @@ router.post('/login', function(req, res, next) {
             return next(err);
         } else {
             if (!user) {
-                return res.status(200).json({ logged : false });
+                return res.json({ logged: false });
+            } else {
+                req.login(user, (err) => {
+                    console.log('is authenticated?: ' + req.isAuthenticated());
+                    return res.json({
+                        logged: true
+                    });
+                    //return res.status(200).json({ logged: true });
+                })
             }
         }
-        req.logIn(user, function(err) {
-            if (err) {
-                return next(err);
-            } else {
-                return res.status(200).json({ logged : true });
-            }
-        });
     })(req, res, next);
 });
 
@@ -38,33 +34,12 @@ router.post('/signup', function(req, res, next) {
             return next(err);
         } else {
             if (!user) {
-                return res.status(200).json({ logged : false });
+                return res.status.json({ logged: false });
+            } else {
+                return res.status.json({ logged: true });
             }
         }
-        req.logIn(user, function(err) {
-            if (err) {
-                return next(err);
-            } else {
-                return res.status(200);
-            }
-        });
     })(req, res, next);
 });
 
-// =========================================================================
-// GET /profile, loads user data and sends to client =======================
-// =========================================================================
-router.get('/profile', authMiddleware ,function (req, res, next) {
-    var user = req.session.passport.user;
-    res.json({user: user});
-  });
-
 module.exports = router;
-
-const authMiddleware = function(req,res,next){
-    if (!req.isAuthenticated()){
-        res.status(401).send("Não está autenticado!");
-    }else{
-        return next();
-    }
-}

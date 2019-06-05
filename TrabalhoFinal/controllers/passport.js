@@ -7,7 +7,7 @@ var connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: '',
-    database: 'backend'
+    database: 'test'
 });
 
 console.log("MySQL connection created at %s with database: %s", connection.config.host, connection.config.database);
@@ -15,21 +15,23 @@ console.log("MySQL connection created at %s with database: %s", connection.confi
 // expose this function to our app using module.exports
 module.exports = function(passport) {
 
-// =========================================================================
-// passport session setup ==================================================
-// =========================================================================
+    // =========================================================================
+    // passport session setup ==================================================
+    // =========================================================================
 
     // required for persistent login sessions
     // passport needs ability to serialize and unserialize users out of session
 
     // used to serialize the user for the session
     passport.serializeUser(function(user, done) {
+        //console.log(user.id);
         return done(null, user.id);
     });
 
     // used to deserialize the user
     passport.deserializeUser(function(id, done) {
         // select from users where id = 
+        console.log(id);
         var sql = "SELECT * FROM users WHERE id = " + id;
         connection.query(sql, function(error, results, fields) {
             if (error) {
@@ -40,9 +42,9 @@ module.exports = function(passport) {
         });
     });
 
-// =========================================================================
-// LOCAL SIGNUP ============================================================
-// =========================================================================
+    // =========================================================================
+    // LOCAL SIGNUP ============================================================
+    // =========================================================================
     passport.use('local-signup', new LocalStrategy({
             // by default, local strategy uses username and password, we will override with email
             usernameField: 'email',
@@ -86,9 +88,9 @@ module.exports = function(passport) {
             });
         }));
 
-// =========================================================================
-// LOCAL LOGIN =============================================================
-// =========================================================================
+    // =========================================================================
+    // LOCAL LOGIN =============================================================
+    // =========================================================================
     passport.use('local-login', new LocalStrategy({
             // by default, local strategy uses username and password, we will override with email
             usernameField: 'email',
@@ -104,7 +106,9 @@ module.exports = function(passport) {
                     if (Object.keys(results).length == 0) {
                         return done(null, false);
                     } else {
-                        return done(null, results[0]);
+                        user = results[0];
+                        console.log(user);
+                        return done(null, user);
                     }
                 }
             });
