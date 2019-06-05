@@ -12,6 +12,8 @@ var usersRouter = require('./routes/users');
 var app = express();
 
 //Components to use
+
+//Allow cors to get all origins and methods or else you are never allowed to make POST, PUT, DELETE requests only GET
 app.use((req, res, next) => {
     res.append('Access-Control-Allow-Origin', ['*']);
     res.append('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
@@ -20,7 +22,7 @@ app.use((req, res, next) => {
 });
 
 app.use(morgan('tiny'));
-//app.use(cors());
+app.use(cors());
 app.use(express.json());
 app.use(bodyParsrer.json());
 app.use(express.urlencoded({ extended: false }));
