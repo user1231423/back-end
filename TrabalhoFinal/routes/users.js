@@ -11,14 +11,14 @@ router.post('/login', function(req, res, next) {
             return next(err);
         } else {
             if (!user) {
-                return res.json({ logged: false });
+                return res.json({
+                    logged: false
+                });
             } else {
                 req.login(user, (err) => {
-                    console.log('is authenticated?: ' + req.isAuthenticated());
                     return res.json({
                         logged: true
                     });
-                    //return res.status(200).json({ logged: true });
                 })
             }
         }

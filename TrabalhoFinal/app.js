@@ -11,7 +11,7 @@ var usersRouter = require('./routes/users');
 var app = express();
 
 //Components to use
-app.use(cors());
+app.use(cors({ credentials: true, origin: 'http://localhost:8080' })); //USE THIS OR NO COOKIS WILL BE ALLOWED BY CORS
 app.use(express.json());
 app.use(bodyParsrer.json());
 app.use(cookieParser());

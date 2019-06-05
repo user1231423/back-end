@@ -31,7 +31,6 @@ module.exports = function(passport) {
     // used to deserialize the user
     passport.deserializeUser(function(id, done) {
         // select from users where id = 
-        console.log(id);
         var sql = "SELECT * FROM users WHERE id = " + id;
         connection.query(sql, function(error, results, fields) {
             if (error) {
@@ -106,9 +105,7 @@ module.exports = function(passport) {
                     if (Object.keys(results).length == 0) {
                         return done(null, false);
                     } else {
-                        user = results[0];
-                        console.log(user);
-                        return done(null, user);
+                        return done(null, results[0]);
                     }
                 }
             });
