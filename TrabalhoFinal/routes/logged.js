@@ -35,7 +35,7 @@ router.delete('/posts/delete', authMiddleware, logged_controller.deletePost);
 router.put('/posts/update', authMiddleware, logged_controller.updatePost);
 
 // =========================================================================
-// GET /chat, NOT MADE YET =================================================
+// GET /chat, !!!!!!!!!!!!!!!!!! NOT MADE YET !!!!!!!!!!!!!!!!!!!!!! =======
 // =========================================================================
 router.get('/chat', authMiddleware);
 
