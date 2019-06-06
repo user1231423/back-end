@@ -20,14 +20,14 @@ router.get('/profile', authMiddleware, logged_controller.sendUser);
 router.get('/logout', authMiddleware, logged_controller.userlogout);
 
 // =========================================================================
+// GET /logout, requests logout user, this clears the session ==============
+// =========================================================================
+router.get('/posts/create', logged_controller.createPost);
+
+// =========================================================================
 // GET /chat, NOT MADE YET =================================================
 // =========================================================================
 router.get('/chat', authMiddleware);
-
-// =========================================================================
-// GET /logout, requests logout user, this clears the session ==============
-// =========================================================================
-router.get('/posts/create', authMiddleware,);
 
 // =========================================================================
 // GET /logout, requests logout user, this clears the session ==============
