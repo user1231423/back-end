@@ -47,9 +47,25 @@ router.put('/posts/update', authMiddleware, posts_controller.updatePost);
 router.get('/posts/show', authMiddleware, posts_controller.userPosts);
 
 // =========================================================================
-// GET /frinds/list requests current user posts ============================
+// GET /friends/list requests current user posts ============================
 // =========================================================================
 router.get('/friends/list', authMiddleware, friends_controller.friendList);
+
+// =========================================================================
+// GET /friends/search search current user frinds acordind to work given ===
+// =========================================================================
+router.get('/friends/search', authMiddleware, friends_controller.findFriend);
+
+// =========================================================================
+// POST /friends/request sends friend request to another user ===============
+// =========================================================================
+router.post('/friends/request', authMiddleware, friends_controller.friendRequest);
+
+// =========================================================================
+// PUT /friends/request sets the decision to add or not to add friend ======
+// =========================================================================
+router.put('/friends/decision', authMiddleware, friends_controller.friendDecision);
+
 
 module.exports = router;
 

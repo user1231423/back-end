@@ -9,11 +9,11 @@ CREATE TABLE IF NOT EXISTS `users` (
   `nome` varchar(80) NOT NULL,
   `data_nasc` date NOT NULL,
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS `posts` (
   `post_id` int(11) NOT NULL AUTO_INCREMENT,
-  `title` varchar(80) NOT NULL,
+  `title` varchar(100) NOT NULL,
   `description` varchar(255) NOT NULL,
   `date` datetime NOT NULL,
   `likes` int(11) NOT NULL,
@@ -24,17 +24,38 @@ CREATE TABLE IF NOT EXISTS `posts` (
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS `imagem_posts` (
-  `imagem_id` int(11) NOT NULL AUTO_INCREMENT,
-  `caminho` varchar(255) NOT NULL,
+  `imagem_posts_id` int(11) NOT NULL AUTO_INCREMENT,
+  `caminho` varchar(255)  NOT NULL,
   `post_id` int(11) NOT NULL,
-  PRIMARY KEY (`imagem_id`),
+  PRIMARY KEY (`imagem_posts_id`),
   FOREIGN KEY (`post_id`) REFERENCES `posts` (`post_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS `imagem_user` (
-  `imagem_id` int(11) NOT NULL AUTO_INCREMENT,
+  `imagem_user_id` int(11) NOT NULL AUTO_INCREMENT,
   `caminho` varchar(255) NOT NULL,
   `user_id` int(11) NOT NULL,
-  PRIMARY KEY (`imagem_id`),
+  PRIMARY KEY (`imagem_user_id`),
   FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS `messages` (
+  `message_id` int(11) NOT NULL AUTO_INCREMENT,
+  `sender_id` int(11) NOT NULL,
+  `recipient_id` int(11) NOT NULL,
+  `body` varchar(255) NOT NULL,
+  `date` datetime NOT NULL,
+  PRIMARY KEY (`message_id`),
+  FOREIGN KEY (`recipient_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (`sender_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS `relations` (
+  `relation_id` int(11) NOT NULL AUTO_INCREMENT,
+  `status` int(11) NOT NULL DEFAULT '0',
+  `user_1` int(11) NOT NULL DEFAULT '0',
+  `user_2` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`relation_id`),
+  FOREIGN KEY (`user_1`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (`user_2`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;
