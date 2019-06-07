@@ -1,23 +1,28 @@
 var express = require('express');
 var router = express.Router();
 
-//Require controler for user settings
-var user_controller = require('../controllers/userController');
+//Require controller for posts
+var posts_controller = require('../controllers/postsController');
 
 // =========================================================================
-// GET /home, loads the home page after login ==============================
+// POST /posts/create, create post =========================================
 // =========================================================================
-router.get('/home', authMiddleware, user_controller.sendWelcoming);
+router.post('/posts/create', authMiddleware, posts_controller.createPost);
 
 // =========================================================================
-// GET /profile, loads user data and sends to client =======================
+// DELETE /posts/delete, deletes post ======================================
 // =========================================================================
-router.get('/profile', authMiddleware, user_controller.sendUser);
+router.delete('/posts/delete', authMiddleware, posts_controller.deletePost);
 
 // =========================================================================
-// GET /logout, requests logout user, this clears the session ==============
+// PUT /posts/update, updates post data ====================================
 // =========================================================================
-router.get('/logout', authMiddleware, user_controller.userlogout);
+router.put('/posts/update', authMiddleware, posts_controller.updatePost);
+
+// =========================================================================
+// GET /posts/show, requests current user posts ============================
+// =========================================================================
+router.get('/posts/show', authMiddleware, posts_controller.userPosts);
 
 module.exports = router;
 

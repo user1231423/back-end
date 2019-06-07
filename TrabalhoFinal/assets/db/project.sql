@@ -52,10 +52,21 @@ CREATE TABLE IF NOT EXISTS `messages` (
 
 CREATE TABLE IF NOT EXISTS `relations` (
   `relation_id` int(11) NOT NULL AUTO_INCREMENT,
-  `status` int(11) NOT NULL DEFAULT '0',
-  `user_1` int(11) NOT NULL DEFAULT '0',
-  `user_2` int(11) NOT NULL DEFAULT '0',
+  `status` int(11) NOT NULL,
+  `user_1` int(11) NOT NULL,
+  `user_2` int(11) NOT NULL,
   PRIMARY KEY (`relation_id`),
   FOREIGN KEY (`user_1`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY (`user_2`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS `comments` (
+  `comment_id` int(11) NOT NULL AUTO_INCREMENT,
+  `comment` varchar(255) NOT NULL,
+  `date` datetime NOT NULL,
+  `post_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL, 
+  PRIMARY KEY (`comment_id`),
+  FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (`post_id`) REFERENCES `posts` (`post_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;

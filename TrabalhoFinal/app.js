@@ -8,6 +8,7 @@ var passport = require('passport');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var loggedRouter = require('./routes/logged');
+var friendsRouter = require('./routes/friends');
 
 var app = express();
 
@@ -29,6 +30,7 @@ require('./controllers/passport')(passport);
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/', loggedRouter);
+app.use('/friends', friendsRouter);
 
 
 module.exports = app;

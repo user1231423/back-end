@@ -9,10 +9,10 @@ var connection = require('../assets/db/connect');
 // ========================================================================================================================
 
 //Get the friend list for current user
-exports.friendList = function(req, res) {
+exports.friendList = function (req, res) {
     var id = req.user.user_id;
     var sql = "SELECT users.user_id, users.nome, users.data_nasc FROM relations INNER JOIN users ON users.user_id = relations.user_2 AND relations.user_1 = " + id;
-    connection.query(sql, function(error, results, fields) { //Execute sql query and add data into the table posts
+    connection.query(sql, function (error, results, fields) { //Execute sql query and add data into the table posts
         if (error) {
             res.send(error);
         } else {
@@ -25,11 +25,11 @@ exports.friendList = function(req, res) {
     });
 }
 
-//Search frind in 
-exports.findFriend = function(req, res) {
+//Search friend
+exports.findFriend = function (req, res) {
     var id = req.user.user_id;
     var sql = "SELECT users.user_id, users.nome, users.data_nasc FROM relations INNER JOIN users ON users.user_id = relations.user_2 AND relations.user_1 = " + id;
-    connection.query(sql, function(error, results, fields) { //Execute sql query and add data into the table posts
+    connection.query(sql, function (error, results, fields) { //Execute sql query and add data into the table posts
         if (error) {
             res.send(error);
         } else {
@@ -55,14 +55,14 @@ exports.findFriend = function(req, res) {
 }
 
 //Friend request from session user to another user
-exports.friendRequest = function(req, res) {
+exports.friendRequest = function (req, res) {
     var id = req.user.user_id;
     var secondUser = req.body.friendID;
     if (!secondUser) {
         res.send("No friend id was sent!");
     } else {
         var sql = "INSERT INTO relations SET status = ?, user_1 = ?, user_2 = ?";
-        connection.query(sql, [1, id, secondUser], function(error, results, fields) { //Execute sql query and add data into the table posts
+        connection.query(sql, [1, id, secondUser], function (error, results, fields) { //Execute sql query and add data into the table posts
             if (error) {
                 res.send(error);
             } else {
@@ -72,16 +72,15 @@ exports.friendRequest = function(req, res) {
     }
 }
 
-//Friend request from session user to another user
-exports.friendDecision = function(req, res) {
-    var id = req.user.user_id;
-    var decision = req.body.decision;
-    var requestID = req.body.request;
-    if ((!decision) || (!requestID)) {
+//Friend decision, this is the user deciding to accept or not the friend request if it 
+exports.friendDecision = function (req, res) {
+    var decision = req.body.decision; //True or false
+    var requestID = req.body.request; //n
+    if ((decision.length == 0) || (!requestID)) {
         res.send("Need more data!");
     } else {
         var sql = "SELECT * FROM relations WHERE relation_id =" + requestID;
-        connection.query(sql, function(error, results, fields) { //Execute sql query and add data into the table posts
+        connection.query(sql, function (error, results, fields) { //Execute query to select * from relations with relation_id that we got from the client
             if (error) {
                 res.send(error);
             } else {
@@ -90,23 +89,59 @@ exports.friendDecision = function(req, res) {
                 } else {
                     if (decision == true) {
                         var sql = "UPDATE relations SET status = 2 WHERE relation_id = " + requestID;
-                        connection.query(sql, function(error, results, fields) { //Execute sql query and add data into the table posts
+                        connection.query(sql, function (error, results, fields) { //Execute sql query and add data into the table posts
                             if (error) {
                                 res.send(error);
                             } else {
-                                res.json(results);
+                                if (results.changedRows == 0) {
+                                    res.send("Nothing changed");
+                                } else {
+                                    res.json(results.changedRows);
+                                }
                             }
                         });
                     } else {
                         var sql = "UPDATE relations SET status = 3 WHERE relation_id = " + requestID;
-                        connection.query(sql, function(error, results, fields) { //Execute sql query and add data into the table posts
+                        connection.query(sql, function (error, results, fields) { //Execute sql query and add data into the table posts
                             if (error) {
                                 res.send(error);
                             } else {
-                                res.json(results);
+                                if (results.changedRows == 0) {
+                                    res.send("Nothing changed");
+                                } else {
+                                    res.json(results.changedRows);
+                                }
                             }
                         });
                     }
+                }
+            }
+        });
+    }
+}
+
+//Delete friend request
+exports.deleteRequest = function (req, res) {
+    var request = req.body.request;
+    if (!request) {
+        res.send("No request id was sent!");
+    } else {
+        var sql = "SELECT * FROM relations WHERE relation_id = " + request;
+        connection.query(sql, function (error, results, fields) {
+            if (error) {
+                res.send(error);
+            } else {
+                if(results.length == 0){
+                    res.send("There is relation with the given id!");
+                }else{
+                    var sql = "DELETE FROM relations WHERE relation_id = " + request;
+                    connection.query(sql, function (error, results, fields) {
+                        if (error) {
+                            res.send(error);
+                        } else {
+                            res.json(results.affectedRows);
+                        }
+                    });
                 }
             }
         });
