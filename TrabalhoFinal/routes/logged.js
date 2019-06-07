@@ -1,48 +1,55 @@
 var express = require('express');
 var router = express.Router();
 
-//Require loggedController
-var logged_controller = require('../controllers/loggedController');
+//Require controler for user settings
+var user_controller = require('../controllers/userController');
+
+//Require controller for posts
+var posts_controller = require('../controllers/postsController');
+
+
+//Require controller for friends
+var friends_controller = require('../controllers/friendsController');
 
 // =========================================================================
 // GET /home, loads the home page after login ==============================
 // =========================================================================
-router.get('/home', authMiddleware, logged_controller.sendWelcoming);
+router.get('/home', authMiddleware, user_controller.sendWelcoming);
 
 // =========================================================================
 // GET /profile, loads user data and sends to client =======================
 // =========================================================================
-router.get('/profile', authMiddleware, logged_controller.sendUser);
+router.get('/profile', authMiddleware, user_controller.sendUser);
 
 // =========================================================================
 // GET /logout, requests logout user, this clears the session ==============
 // =========================================================================
-router.get('/logout', authMiddleware, logged_controller.userlogout);
+router.get('/logout', authMiddleware, user_controller.userlogout);
 
 // =========================================================================
 // POST /posts/create, create post =========================================
 // =========================================================================
-router.post('/posts/create', authMiddleware, logged_controller.createPost);
+router.post('/posts/create', authMiddleware, posts_controller.createPost);
 
 // =========================================================================
-// DELETE /posts/delete, deletes post by id ================================
+// DELETE /posts/delete, deletes post ======================================
 // =========================================================================
-router.delete('/posts/delete', authMiddleware, logged_controller.deletePost);
+router.delete('/posts/delete', authMiddleware, posts_controller.deletePost);
 
 // =========================================================================
 // PUT /posts/update, updates post data ====================================
 // =========================================================================
-router.put('/posts/update', authMiddleware, logged_controller.updatePost);
+router.put('/posts/update', authMiddleware, posts_controller.updatePost);
 
 // =========================================================================
-// GET /chat, !!!!!!!!!!!!!!!!!! NOT MADE YET !!!!!!!!!!!!!!!!!!!!!! =======
+// GET /posts/show, requests current user posts ============================
 // =========================================================================
-router.get('/chat', authMiddleware);
+router.get('/posts/show', authMiddleware, posts_controller.userPosts);
 
 // =========================================================================
-// GET /logout, requests logout user, this clears the session ==============
+// GET /frinds/list requests current user posts ============================
 // =========================================================================
-router.get('/posts/show', authMiddleware, );
+router.get('/friends/list', authMiddleware, friends_controller.friendList);
 
 module.exports = router;
 

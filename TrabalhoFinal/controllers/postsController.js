@@ -1,27 +1,5 @@
 var connection = require('../assets/db/connect');
 
-//Request user and sends it as json to client
-exports.sendUser = function(req, res, next) {
-    res.json({
-        user: req.user
-    });
-}
-
-//Sends a simple message as json to clients
-exports.sendWelcoming = function(req, res) {
-    res.json({
-        message: "Welcome Home after login!"
-    })
-}
-
-//Requests logout and after it sends a json with variable logged set as false
-exports.userlogout = function(req, res) {
-    req.logOut();
-    res.json({
-        logged: false
-    });
-}
-
 //Gets the data sent from the client side and inserts it into the database on the table posts
 exports.createPost = function(req, res) {
     var data = req.body;
@@ -70,7 +48,7 @@ exports.deletePost = function(req, res) {
                             //Send to client the amount of affected rows
                             res.json(results.affectedRows)
                         }
-                    })
+                    });
                 }
             }
         })
@@ -102,7 +80,7 @@ exports.updatePost = function(req, res) {
                                 //If query is sucessfull send to client the ammount of changed rows
                                 res.json(results.changedRows)
                             }
-                        })
+                        });
                     } else if ((results[0].description != data.desc) && (results[0].title == data.title)) {
                         var sql = "UPDATE posts SET description = ? WHERE post_id = " + id;
                         //Execute sql query and add change data from a row in table posts
@@ -113,7 +91,7 @@ exports.updatePost = function(req, res) {
                                 //If query is sucessfull send to client the ammount of changed rows
                                 res.json(results.changedRows)
                             }
-                        })
+                        });
                     } else if ((results[0].description != data.desc) && (results[0].title != data.title)) {
                         var sql = "UPDATE posts SET title = ?, description = ? WHERE post_id = " + id;
                         //Execute sql query and add change data from a row in table posts
@@ -124,7 +102,7 @@ exports.updatePost = function(req, res) {
                                 //If query is sucessfull send to client the ammount of changed rows
                                 res.json(results.changedRows)
                             }
-                        })
+                        });
                     } else {
                         //If none of the previus conditions was matched it means nothing was changed
                         res.send("Nothing was changed");
@@ -133,4 +111,22 @@ exports.updatePost = function(req, res) {
             }
         })
     }
+}
+
+//Gets the data sent from the client side and inserts it into the database on the table posts
+exports.userPosts = function(req, res) {
+    //Request current user id
+    var id = req.user.user_id;
+    var sql = "SELECT * FROM posts WHERE user_id = " + id;
+    connection.query(sql, function(error, results, fields) {
+        if (error) {
+            res.send(error);
+        } else {
+            if (results.length == 0) {
+                res.send("This user has no posts!");
+            } else {
+                res.json(results);
+            }
+        }
+    });
 }

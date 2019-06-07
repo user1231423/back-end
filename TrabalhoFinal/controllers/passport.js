@@ -1,8 +1,6 @@
 var LocalStrategy = require('passport-local').Strategy;
 var connection = require('../assets/db/connect');
 
-console.log("MySQL connection created at %s with database: %s", connection.config.host, connection.config.database);
-
 // expose this function to our app using module.exports
 module.exports = function(passport) {
 
@@ -44,18 +42,19 @@ module.exports = function(passport) {
 
             //Require data from body needed to register user
             var newUser = {
-                firstName: req.body.firstName,
-            }
-
-            // find a user whose email is the same as the form email
-            // we are checking to see if the user trying to login already exists 
+                    name: req.body.name,
+                    contacto: req.body.contacto,
+                    data_nasc: req.body.data_nasc
+                }
+                // find a user whose email is the same as the form email
+                // we are checking to see if the user trying to login already exists
             var sql = "SELECT * FROM users WHERE email = ?";
             connection.query(sql, [email], function(error, results, fields) {
                 if (error) {
                     return done(error);
                 } else if (Object.keys(results).length == 0) { //IF = 0 means it didn't return anything so it does not exist so we will create that user ->
-                    var sql = "INSERT INTO users SET email = ?, password = ?, nome = ?";
-                    connection.query(sql, [email, password, newUser.firstName], function(error, results, fields) { //Execute sql query and add data into the table users
+                    var sql = "INSERT INTO users SET email = ?, password = ?, contacto = ?, nome = ?, data_nasc = ?";
+                    connection.query(sql, [email, password, newUser.contacto, newUser.name, newUser.data_nasc], function(error, results, fields) { //Execute sql query and add data into the table users
                         if (error) {
                             return done(error);
                         } else {
