@@ -4,6 +4,9 @@ var router = express.Router();
 //Require controller for posts
 var posts_controller = require('../controllers/postsController');
 
+//Require image controller
+var imgController = require('../controllers/imageController');
+
 // =========================================================================
 // POST /posts/create, create post =========================================
 // =========================================================================
@@ -39,8 +42,13 @@ router.put('/likes/:id', authMiddleware, posts_controller.postsLikes);
 // =========================================================================
 router.put('/dislikes/:id', authMiddleware, posts_controller.postsDislikes);
 
-module.exports = router;
+// =========================================================================
+// POST posts/image, upload image to server and inserts location on db =====
+// id is the post id
+// =========================================================================
+router.post('/image/:id', authMiddleware , imgController.uploadPostImg);
 
+module.exports = router;
 //Check if user is authenticated
 function authMiddleware(req, res, next) {
     if (req.isAuthenticated()) {

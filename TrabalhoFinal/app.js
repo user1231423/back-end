@@ -7,8 +7,8 @@ var passport = require('passport');
 
 //Requires routes
 var indexRouter = require('./routes/index');
+var registerRouter = require('./routes/register');
 var usersRouter = require('./routes/users');
-var loggedRouter = require('./routes/logged');
 var friendsRouter = require('./routes/friends');
 var postsRouter = require('./routes/posts');
 
@@ -30,8 +30,8 @@ require('./controllers/passport')(passport);
 
 //Routes controllers
 app.use('/', indexRouter);
+app.use('/register', registerRouter);
 app.use('/users', usersRouter);
-app.use('/', loggedRouter);
 app.use('/friends', friendsRouter);
 app.use('/posts', postsRouter);
 

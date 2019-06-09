@@ -1,53 +1,57 @@
 var express = require('express');
 var router = express.Router();
-var passport = require('passport');
+
+//Require controler for user settings
+var user_controller = require('../controllers/userController');
+
+//Require image controller
+var imgController = require('../controllers/imageController');
 
 // =========================================================================
-// POST /login , uses passport to authenticate user and start session ======
+// GET users/home, loads the home page after login =========================
 // =========================================================================
-router.post('/login', function(req, res, next) {
-    if ((!req.body.email) || (!req.body.password)) {
-        return res.send("Error, need more information!");
-    } else {
-        passport.authenticate('local-login', function(err, user, info) {
-            if (err) {
-                return next(err);
-            } else {
-                if (!user) {
-                    return res.json({
-                        logged: false
-                    });
-                } else {
-                    req.login(user, (err) => {
-                        return res.json({
-                            logged: true
-                        });
-                    })
-                }
-            }
-        })(req, res, next);
-    }
-});
+router.get('/home', authMiddleware, user_controller.sendWelcoming);
 
 // =========================================================================
-// POST /signup , uses passport to sign up user ============================
+// GET users/profile, loads user data and sends to client ==================
 // =========================================================================
-router.post('/signup', function(req, res, next) {
-    if ((!req.body.email) || (!req.body.password) || (!req.body.contacto) || (!req.body.name) || (!req.body.data_nasc)) {
-        return res.send("Error, need more information!");
-    } else {
-        passport.authenticate('local-signup', function(err, user, info) {
-            if (err) {
-                return next(err);
-            } else {
-                if (!user) {
-                    return res.json({ isRegisted: false });
-                } else {
-                    return res.json({ isRegisted: true });
-                }
-            }
-        })(req, res, next);
+router.get('/profile', authMiddleware, user_controller.sendUser);
+
+// =========================================================================
+// GET users/logout, requests logout user, this clears the session =========
+// =========================================================================
+router.get('/logout', authMiddleware, user_controller.userlogout);
+
+// =========================================================================
+// GET users/find, finds the user in the table users =======================
+/*
+    {
+        "search": "user2"
     }
-});
+*/
+// =========================================================================
+router.get('/find', authMiddleware, user_controller.findUser);
+
+// =========================================================================
+// GET users/person/id, gets another person profile ========================
+// =========================================================================
+router.get('/person/:id', authMiddleware, user_controller.getProfile);
+
+// =========================================================================
+// POST users/image/:id, upload image to server and inserts location on db =
+// id is the user id
+// =========================================================================
+router.post('/image/:id', authMiddleware , imgController.uploadUserImg);
+
 
 module.exports = router;
+
+//Check if user is authenticated
+function authMiddleware(req, res, next) {
+    if (req.isAuthenticated()) {
+        //It means user is authenticated so he can go through
+        return next();
+    } else {
+        res.status(401).send("Não está autenticado!"); //Send 401 status, not unauthorized request and some text about the error
+    }
+};
