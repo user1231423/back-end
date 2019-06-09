@@ -21,13 +21,18 @@ router.get('/logout', authMiddleware, user_controller.userlogout);
 
 // =========================================================================
 // GET /find, finds the user in the table users ============================
+/*
+    {
+        "search": "user2"
+    }
+*/
 // =========================================================================
 router.get('/find', authMiddleware, user_controller.findUser);
 
 // =========================================================================
-// GET /person, gets another person profile ================================
+// GET /person/id, gets another person profile =============================
 // =========================================================================
-router.get('/person', authMiddleware, user_controller.getProfile);
+router.get('/person/:id', authMiddleware, user_controller.getProfile);
 
 module.exports = router;
 

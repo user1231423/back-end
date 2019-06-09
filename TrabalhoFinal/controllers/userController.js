@@ -51,7 +51,7 @@ exports.userlogout = function(req, res) {
 
 //Get profile to another user
 exports.getProfile = function(req,res){
-    var id = req.body.personID;
+    var id = req.params.id;
     var sql = "SELECT * FROM users WHERE user_id = " + id;
     connection.query(sql, function(error,results,fields){
         if (error){
