@@ -5,7 +5,7 @@ var router = express.Router();
 var user_controller = require('../controllers/userController');
 
 // =========================================================================
-// GET /home, loads the home page after login ==============================
+// GET /home, loads the home page after login =========================
 // =========================================================================
 router.get('/home', authMiddleware, user_controller.sendWelcoming);
 
@@ -18,6 +18,16 @@ router.get('/profile', authMiddleware, user_controller.sendUser);
 // GET /logout, requests logout user, this clears the session ==============
 // =========================================================================
 router.get('/logout', authMiddleware, user_controller.userlogout);
+
+// =========================================================================
+// GET /find, requests logout user, this clears the session ================
+// =========================================================================
+router.get('/find', authMiddleware, user_controller.findUser);
+
+// =========================================================================
+// GET /person, gets another person profile ================================
+// =========================================================================
+router.get('/person', authMiddleware, user_controller.getProfile);
 
 module.exports = router;
 

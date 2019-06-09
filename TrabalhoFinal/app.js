@@ -5,10 +5,12 @@ var bodyParsrer = require('body-parser');
 var cors = require('cors');
 var passport = require('passport');
 
+//Requires routes
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var loggedRouter = require('./routes/logged');
 var friendsRouter = require('./routes/friends');
+var postsRouter = require('./routes/posts');
 
 var app = express();
 
@@ -26,11 +28,12 @@ app.use(passport.session());
 
 require('./controllers/passport')(passport);
 
-//Routes
+//Routes controllers
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/', loggedRouter);
 app.use('/friends', friendsRouter);
+app.use('/posts', postsRouter);
 
 
 module.exports = app;
