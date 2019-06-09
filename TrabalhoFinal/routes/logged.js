@@ -20,7 +20,7 @@ router.get('/profile', authMiddleware, user_controller.sendUser);
 router.get('/logout', authMiddleware, user_controller.userlogout);
 
 // =========================================================================
-// GET /find, requests logout user, this clears the session ================
+// GET /find, finds the user in the table users ============================
 // =========================================================================
 router.get('/find', authMiddleware, user_controller.findUser);
 
