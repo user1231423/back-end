@@ -43,6 +43,10 @@ router.get('/person/:id', authMiddleware, user_controller.getProfile);
 // =========================================================================
 router.post('/image/:id', authMiddleware , imgController.uploadUserImg);
 
+// =========================================================================
+// DELETE users/image, deletes current user image ==========================
+// =========================================================================
+router.delete('/image', authMiddleware , imgController.deleteUserImg);
 
 module.exports = router;
 

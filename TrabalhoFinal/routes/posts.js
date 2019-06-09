@@ -43,10 +43,16 @@ router.put('/likes/:id', authMiddleware, posts_controller.postsLikes);
 router.put('/dislikes/:id', authMiddleware, posts_controller.postsDislikes);
 
 // =========================================================================
-// POST posts/image, upload image to server and inserts location on db =====
+// POST posts/image/:id, upload image to server and inserts location on db =====
 // id is the post id
 // =========================================================================
 router.post('/image/:id', authMiddleware , imgController.uploadPostImg);
+
+// =========================================================================
+// DELETE posts/image/:id, deletes current user image ==========================
+// id is the post id
+// =========================================================================
+router.delete('/image/:id', authMiddleware , imgController.deletePostImg);
 
 module.exports = router;
 //Check if user is authenticated
