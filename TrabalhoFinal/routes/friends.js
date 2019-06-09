@@ -11,28 +11,44 @@ router.get('/list', authMiddleware, friends_controller.friendList);
 
 // =========================================================================
 // GET /friends/search search current user frinds acordind to word given ===
+/*
+    {
+        "search": "user2"
+    }
+*/
 // =========================================================================
 router.get('/search', authMiddleware, friends_controller.findFriend);
 
 // =========================================================================
 // POST /friends/request sends friend request to another user ==============
+/*
+    {
+        "friendID": 2
+    }
+*/
 // =========================================================================
 router.post('/request', authMiddleware, friends_controller.friendRequest);
 
 // =========================================================================
-// PUT /friends/request sets the decision to add or not to add friend ======
+// PUT /friends/decision sets the decision to add or not to add friend =====
+/*  -------------- ! Need relation id on params ! --------------------------
+    {
+        "decision": true
+    }
+*/
 // =========================================================================
-router.put('/decision', authMiddleware, friends_controller.friendDecision);
+router.put('/decision/:id', authMiddleware, friends_controller.friendDecision);
 
 // =========================================================================
 // DELETE /friends/request Deletes friend request ==========================
+// --------------- ! Need relation id on params ! --------------------------
 // =========================================================================
-router.delete('/request', authMiddleware, friends_controller.deleteRequest);
+router.delete('/request/:id', authMiddleware, friends_controller.deleteRequest);
 
 // =========================================================================
 // POST /friends/block blocks user =========================================
 // =========================================================================
-router.post('/block', authMiddleware, friends_controller.blockPerson);
+router.post('/block/:personID', authMiddleware, friends_controller.blockPerson);
 
 // =========================================================================
 // GET /friends/blocklist list of blocked users ============================
