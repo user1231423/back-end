@@ -15,12 +15,8 @@ var messageController = require('../controllers/messagesController');
 router.post('/new/:id', authMiddleware, messageController.createMessage);
 
 // ===========================================================================
-// DELETE /message/delete/:id, create new message ============================
-/* id is the message id
-    {
-        "message": "hello"
-    }
-*/
+// DELETE /message/delete/:id, delete message ============================
+//id is the message id
 // ===========================================================================
 router.delete('/delete/:id', authMiddleware, messageController.deleteMessage);
 

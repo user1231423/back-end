@@ -18,9 +18,9 @@ router.get('/home', authMiddleware, user_controller.sendWelcoming);
 router.get('/profile', authMiddleware, user_controller.sendUser);
 
 // =========================================================================
-// GET users/logout, requests logout user, this clears the session =========
+// DELETE users/logout, requests logout user, this clears the session =========
 // =========================================================================
-router.get('/logout', authMiddleware, user_controller.userlogout);
+router.delete('/logout', authMiddleware, user_controller.userlogout);
 
 // =========================================================================
 // GET users/find, finds the user in the table users =======================

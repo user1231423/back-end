@@ -64,7 +64,7 @@ router.put('/dislikes/:id', authMiddleware, posts_controller.postsDislikes);
 router.post('/image/:id', authMiddleware , imgController.uploadPostImg);
 
 // =========================================================================
-// DELETE posts/image/:id, deletes current user image ======================
+// DELETE posts/image/:id, deletes post image ==============================
 // id is the post id
 // =========================================================================
 router.delete('/image/:id', authMiddleware , imgController.deletePostImg);

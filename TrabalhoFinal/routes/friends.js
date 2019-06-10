@@ -21,13 +21,9 @@ router.get('/search', authMiddleware, friends_controller.findFriend);
 
 // =========================================================================
 // POST /friends/request sends friend request to another user ==============
-/*
-    {
-        "friendID": 2
-    }
-*/
+// id is another user id
 // =========================================================================
-router.post('/request', authMiddleware, friends_controller.friendRequest);
+router.post('/request/:id', authMiddleware, friends_controller.friendRequest);
 
 // =========================================================================
 // PUT /friends/decision sets the decision to add or not to add friend =====
