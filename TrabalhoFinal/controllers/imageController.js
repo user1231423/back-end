@@ -95,6 +95,7 @@ exports.uploadUserImg = function (req, res) {
 //Deletes the current session user image
 exports.deleteUserImg = function (req, res) {
     var userID = req.user.user_id;
+    //Check if user has image
     var sql = "SELECT * FROM imagem_user WHERE user_id = " + userID;
     connection.query(sql, function (error, results, fields) {
         if (error) {
@@ -126,6 +127,7 @@ exports.deleteUserImg = function (req, res) {
 //Delete post image
 exports.deletePostImg = function (req, res) {
     var postID = req.params.id;
+    //Check if post has image
     var sql = "SELECT * FROM imagem_posts WHERE post_id = " + postID;
     connection.query(sql, function (error, results, fields) {
         if (error) {

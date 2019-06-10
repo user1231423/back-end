@@ -2,9 +2,23 @@ var connection = require('../assets/db/connect');
 
 //Request user and sends it as json to client
 exports.sendUser = function(req, res, next) {
-    res.json({
-        user: req.user
-    });
+    var id = req.user.user_id;
+    if(!id){
+        res.send("No id given");
+    }else{
+        var sql = "SELECT users.user_id, users.contacto, users.nome, users.data_nasc, imagem_user.caminho FROM users LEFT JOIN imagem_user ON imagem_user.user_id = users.user_id WHERE users.user_id = " + id;
+        connection.query(sql, function(error,results,fields){
+            if(error){
+                res.send(error);
+            }else{
+                if(results.length == 0){
+                    res.send("No user with given id!");
+                }else{
+                    res.send(results[0]);
+                }
+            }
+        });
+    }
 }
 
 //Sends a simple message as json to clients
@@ -16,7 +30,7 @@ exports.sendWelcoming = function(req, res) {
 
 //Find user in the table users
 exports.findUser = function(req,res){
-    var sql = "SELECT * FROM users";
+    var sql = "SELECT users.user_id, users.contacto, users.nome, users.data_nasc, imagem_user.caminho FROM users LEFT JOIN imagem_user ON imagem_user.user_id = users.user_id";
     connection.query(sql, function (error, results, fields) { 
         if (error) {
             res.send(error);
@@ -52,7 +66,7 @@ exports.userlogout = function(req, res) {
 //Get profile to another user
 exports.getProfile = function(req,res){
     var id = req.params.id;
-    var sql = "SELECT * FROM users WHERE user_id = " + id;
+    var sql = "SELECT users.user_id, users.contacto, users.nome, users.data_nasc, imagem_user.caminho FROM users LEFT JOIN imagem_user ON imagem_user.user_id = users.user_id WHERE users.user_id = " + id;
     connection.query(sql, function(error,results,fields){
         if (error){
             res.send(error);
