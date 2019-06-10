@@ -11,6 +11,7 @@ var registerRouter = require('./routes/register');
 var usersRouter = require('./routes/users');
 var friendsRouter = require('./routes/friends');
 var postsRouter = require('./routes/posts');
+var messageRouter = require('./routes/messages');
 
 var app = express();
 
@@ -34,6 +35,6 @@ app.use('/register', registerRouter);
 app.use('/users', usersRouter);
 app.use('/friends', friendsRouter);
 app.use('/posts', postsRouter);
-
+app.use('/message', messageRouter);
 
 module.exports = app;
