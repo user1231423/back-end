@@ -14,7 +14,7 @@ exports.sendUser = function(req, res, next) {
                 if(results.length == 0){
                     res.send("No user with given id!");
                 }else{
-                    res.send(results[0]);
+                    res.json(results[0]);
                 }
             }
         });
