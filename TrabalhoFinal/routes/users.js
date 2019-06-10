@@ -48,6 +48,11 @@ router.post('/image/:id', authMiddleware , imgController.uploadUserImg);
 // =========================================================================
 router.delete('/image', authMiddleware , imgController.deleteUserImg);
 
+// =========================================================================
+// PUT users/image, updates user image =====================================
+// =========================================================================
+router.put('/image', authMiddleware , imgController.updateUserImg);
+
 module.exports = router;
 
 //Check if user is authenticated

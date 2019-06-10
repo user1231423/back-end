@@ -9,16 +9,29 @@ var imgController = require('../controllers/imageController');
 
 // =========================================================================
 // POST /posts/create, create post =========================================
+/*
+    {
+        "title": "title",
+        "desc": "desc"
+    }
+*/
 // =========================================================================
 router.post('/create', authMiddleware, posts_controller.createPost);
 
 // =========================================================================
 // DELETE /posts/delete, deletes post ======================================
+// id is the post id
 // =========================================================================
 router.delete('/delete/:id', authMiddleware, posts_controller.deletePost);
 
 // =========================================================================
-// PUT /posts/update, updates post data ====================================
+// PUT /posts/update/:id, updates post data ================================
+/* id is the post id
+    {
+        "title": "title",
+        "desc": "desc"
+    }
+*/
 // =========================================================================
 router.put('/update/:id', authMiddleware, posts_controller.updatePost);
 
@@ -34,22 +47,24 @@ router.get('/friends', authMiddleware, posts_controller.friendsPosts);
 
 // =========================================================================
 // PUT posts/likes, increment post likes ===================================
+// id is the post id
 // =========================================================================
 router.put('/likes/:id', authMiddleware, posts_controller.postsLikes);
 
 // =========================================================================
 // PUT posts/dislikes, increment post dislikes =============================
+// id is the psot id
 // =========================================================================
 router.put('/dislikes/:id', authMiddleware, posts_controller.postsDislikes);
 
 // =========================================================================
-// POST posts/image/:id, upload image to server and inserts location on db =====
+// POST posts/image/:id, upload image to server and inserts location on db =
 // id is the post id
 // =========================================================================
 router.post('/image/:id', authMiddleware , imgController.uploadPostImg);
 
 // =========================================================================
-// DELETE posts/image/:id, deletes current user image ==========================
+// DELETE posts/image/:id, deletes current user image ======================
 // id is the post id
 // =========================================================================
 router.delete('/image/:id', authMiddleware , imgController.deletePostImg);

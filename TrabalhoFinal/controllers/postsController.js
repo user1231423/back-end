@@ -3,23 +3,27 @@ var connection = require('../assets/db/connect');
 //Gets the data sent from the client side and inserts it into the database on the table posts
 exports.createPost = function (req, res) {
     var data = req.body;
-    //Request current user id
-    var id = req.user.user_id;
-    if ((!data.title) || (!data.desc) || (data.title.length == 0) || (data.desc.length == 0) || (!id)) {
-        res.send("No data sent");
+    if ((Object.keys(data).length == 0) || (!data)) {
+        res.send("No data sent!");
     } else {
-        var date = new Date();
-        //Get date and time to insert on database
-        var time = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDay() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
-        var sql = "INSERT INTO posts SET title = ?, description = ?, date = ?, user_id = ?, likes = 0, dislikes = 0";
-        connection.query(sql, [data.title, data.desc, time, id], function (error, results, fields) { //Execute sql query and add data into the table posts
-            if (error) {
-                res.send(error);
-            } else {
-                //If query is sucessfull send to cliend inserted id
-                res.json(results.insertId)
-            }
-        });
+        //Request current user id
+        var id = req.user.user_id;
+        if ((!data.title) || (!data.desc) || (data.title.length == 0) || (data.desc.length == 0) || (!id)) {
+            res.send("Need more data!");
+        } else {
+            var date = new Date();
+            //Get date and time to insert on database
+            var time = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDay() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+            var sql = "INSERT INTO posts SET title = ?, description = ?, date = ?, user_id = ?, likes = 0, dislikes = 0";
+            connection.query(sql, [data.title, data.desc, time, id], function (error, results, fields) { //Execute sql query and add data into the table posts
+                if (error) {
+                    res.send(error);
+                } else {
+                    //If query is sucessfull send to cliend inserted id
+                    res.json(results.insertId)
+                }
+            });
+        }
     }
 }
 
@@ -50,7 +54,7 @@ exports.deletePost = function (req, res) {
                                 res.json(results.affectedRows)
                             }
                         });
-                    }else{
+                    } else {
                         res.send("Can't delete post it's not yours!");
                     }
                 }
@@ -66,59 +70,63 @@ exports.updatePost = function (req, res) {
         res.send("No id sent!");
     } else {
         var data = req.body;
-        var sql = "SELECT * FROM posts WHERE post_id = " + id;
-        connection.query(sql, function (error, results, fields) { //Get the post to make sure he exists
-            if (error) {
-                res.send(error);
-            } else {
-                if (!results[0]) { //Post does not exist
-                    res.send("No post with given id!");
-                } else { 
-                    if(results[0].user_id == req.user.user_id){
-                        //Check data from query if matched data that we got from body
-                        if ((results[0].title != data.title) && (results[0].description == data.desc)) {
-                            var sql = "UPDATE posts SET title = ? WHERE post_id = " + id;
-                            //Execute sql query and add change data from a row in table posts
-                            connection.query(sql, [data.title], function (error, results, fields) {
-                                if (error) {
-                                    res.send(error);
-                                } else {
-                                    //If query is sucessfull send to client the ammount of changed rows
-                                    res.json(results.changedRows)
-                                }
-                            });
-                        } else if ((results[0].description != data.desc) && (results[0].title == data.title)) {
-                            var sql = "UPDATE posts SET description = ? WHERE post_id = " + id;
-                            //Execute sql query and add change data from a row in table posts
-                            connection.query(sql, [data.desc], function (error, results, fields) {
-                                if (error) {
-                                    res.send(error);
-                                } else {
-                                    //If query is sucessfull send to client the ammount of changed rows
-                                    res.json(results.changedRows)
-                                }
-                            });
-                        } else if ((results[0].description != data.desc) && (results[0].title != data.title)) {
-                            var sql = "UPDATE posts SET title = ?, description = ? WHERE post_id = " + id;
-                            //Execute sql query and add change data from a row in table posts
-                            connection.query(sql, [data.title, data.desc], function (error, results, fields) {
-                                if (error) {
-                                    res.send(error);
-                                } else {
-                                    //If query is sucessfull send to client the ammount of changed rows
-                                    res.json(results.changedRows)
-                                }
-                            });
+        if ((Object.keys(data).length == 0) || (!data)) {
+            res.send("No data sent!");
+        } else {
+            var sql = "SELECT * FROM posts WHERE post_id = " + id;
+            connection.query(sql, function (error, results, fields) { //Get the post to make sure he exists
+                if (error) {
+                    res.send(error);
+                } else {
+                    if (!results[0]) { //Post does not exist
+                        res.send("No post with given id!");
+                    } else {
+                        if (results[0].user_id == req.user.user_id) {
+                            //Check data from query if matched data that we got from body
+                            if ((results[0].title != data.title) && (results[0].description == data.desc)) {
+                                var sql = "UPDATE posts SET title = ? WHERE post_id = " + id;
+                                //Execute sql query and add change data from a row in table posts
+                                connection.query(sql, [data.title], function (error, results, fields) {
+                                    if (error) {
+                                        res.send(error);
+                                    } else {
+                                        //If query is sucessfull send to client the ammount of changed rows
+                                        res.json(results.changedRows)
+                                    }
+                                });
+                            } else if ((results[0].description != data.desc) && (results[0].title == data.title)) {
+                                var sql = "UPDATE posts SET description = ? WHERE post_id = " + id;
+                                //Execute sql query and add change data from a row in table posts
+                                connection.query(sql, [data.desc], function (error, results, fields) {
+                                    if (error) {
+                                        res.send(error);
+                                    } else {
+                                        //If query is sucessfull send to client the ammount of changed rows
+                                        res.json(results.changedRows)
+                                    }
+                                });
+                            } else if ((results[0].description != data.desc) && (results[0].title != data.title)) {
+                                var sql = "UPDATE posts SET title = ?, description = ? WHERE post_id = " + id;
+                                //Execute sql query and add change data from a row in table posts
+                                connection.query(sql, [data.title, data.desc], function (error, results, fields) {
+                                    if (error) {
+                                        res.send(error);
+                                    } else {
+                                        //If query is sucessfull send to client the ammount of changed rows
+                                        res.json(results.changedRows)
+                                    }
+                                });
+                            } else {
+                                //If none of the previus conditions was matched it means nothing was changed
+                                res.send("Nothing was changed");
+                            }
                         } else {
-                            //If none of the previus conditions was matched it means nothing was changed
-                            res.send("Nothing was changed");
+                            res.send("Can't edit post if it's not yours!");
                         }
-                    }else{
-                        res.send("Can't edit post if it's not yours!");
                     }
                 }
-            }
-        })
+            })
+        }
     }
 }
 
@@ -126,7 +134,7 @@ exports.updatePost = function (req, res) {
 exports.userPosts = function (req, res) {
     //Request current user id
     var id = req.user.user_id;
-    var sql = "SELECT * FROM posts WHERE user_id = " + id;
+    var sql = "SELECT users.user_id, users.nome, users.contacto, users.data_nasc, imagem_user.caminho AS img_user,posts.post_id, posts.title, posts.description, posts.date, posts.likes, posts.dislikes, imagem_posts.caminho AS img_post FROM posts LEFT JOIN imagem_posts ON imagem_posts.post_id = posts.post_id INNER JOIN users ON posts.user_id = users.user_id LEFT JOIN imagem_user on imagem_user.user_id = users.user_id WHERE users.user_id = " + id;
     connection.query(sql, function (error, results, fields) {
         if (error) {
             res.send(error);
@@ -144,7 +152,7 @@ exports.userPosts = function (req, res) {
 exports.friendsPosts = function (req, res) {
     var id = req.user.user_id;
     //Select all posts from the current user friends ordered by date from the most recent to the oldest
-    var sql = "SELECT posts.post_id, posts.title, posts.description, posts.date, posts.likes, posts.dislikes FROM posts INNER JOIN users ON posts.user_id = users.user_id INNER JOIN relations ON users.user_id = relations.user_2 AND relations.status = 2 AND relations.user_1 = ? ORDER BY posts.date DESC";
+    var sql = "SELECT users.user_id, users.nome, users.contacto, users.data_nasc, imagem_user.caminho AS img_user,posts.post_id, posts.title, posts.description, posts.date, posts.likes, posts.dislikes, imagem_posts.caminho AS img_post FROM posts LEFT JOIN imagem_posts ON imagem_posts.post_id = posts.post_id INNER JOIN users ON posts.user_id = users.user_id LEFT JOIN imagem_user on imagem_user.user_id = users.user_id INNER JOIN relations ON users.user_id = relations.user_2 AND relations.status = 2 AND relations.user_1 = ? ORDER BY posts.date DESC";
     connection.query(sql, [id], function (error, results, fields) {
         if (error) {
             res.send(error);

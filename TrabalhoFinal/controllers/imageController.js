@@ -110,13 +110,13 @@ exports.deleteUserImg = function (req, res) {
                     if (error) {
                         res.send(error);
                     } else {
+                        res.json(results.affectedRows);
                         //Also deletes image from server
                         fs.unlinkSync('./' + imgPath, function (error) {
                             if (error) {
                                 res.send(error);
                             }
                         });
-                        res.json(results.affectedRows);
                     }
                 })
             }
@@ -142,16 +142,61 @@ exports.deletePostImg = function (req, res) {
                     if (error) {
                         res.send(error);
                     } else {
+                        res.json(results.affectedRows);
                         //Also deletes image from server
                         fs.unlinkSync('./' + imgPath, function (error) {
                             if (error) {
                                 res.send(error);
                             }
                         });
-                        res.json(results.affectedRows);
                     }
                 })
             }
         }
     })
+}
+
+//Update user image
+exports.updateUserImg = function (req, res) {
+    var userID = req.user.user_id;
+    upload(req, res, function (error, result) {
+        if (error) {
+            res.send(error);
+        } else {
+            if (!req.file) { //if no file was sent
+                res.send("No file given!");
+            } else {
+                //query to check if user already has image
+                var sql = "SELECT * FROM imagem_user WHERE user_id = " + userID;
+                connection.query(sql, function (error, results, fields) {
+                    if (error) {
+                        res.send(error);
+                    } else {
+                        if (results.length == 0) { //If he has no image user needs to upload one first to change it
+                            res.send("No image for this user, Upload image first!");
+                        } else {
+                            var oldFilePath = results[0].caminho;
+                            var filePath = req.file.path;
+                            //update data in table
+                            var sql = "UPDATE imagem_user SET caminho = ? WHERE user_id = ?";
+                            connection.query(sql, [filePath, userID], function (error, results, fields) {
+                                if (error) {
+                                    res.send(error);
+                                } else {
+                                    res.json(results.changedRows);
+                                }
+                            });
+                            //delete old file from server
+                            fs.unlink('./' + oldFilePath, function (error) {
+                                if (error) {
+                                    res.send(error);
+                                    fs.unlink('./' + filePath);
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+        }
+    });
 }
