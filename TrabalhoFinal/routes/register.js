@@ -6,26 +6,30 @@ var passport = require('passport');
 // POST register/login , uses passport to authenticate user and start session ======
 // =========================================================================
 router.post('/login', function(req, res, next) {
-    if ((!req.body.email) || (!req.body.password)) {
-        return res.send("Error, need more information!");
-    } else {
-        passport.authenticate('local-login', function(err, user, info) {
-            if (err) {
-                return next(err);
-            } else {
-                if (!user) {
-                    return res.json({
-                        logged: false
-                    });
+    if(req.user){
+        res.send("Logout first!");
+    }else{
+        if ((!req.body.email) || (!req.body.password)) {
+            return res.send("Error, need more information!");
+        } else {
+            passport.authenticate('local-login', function(err, user, info) {
+                if (err) {
+                    return next(err);
                 } else {
-                    req.login(user, (err) => {
+                    if (!user) {
                         return res.json({
-                            logged: true
+                            logged: false
                         });
-                    })
+                    } else {
+                        req.login(user, (err) => {
+                            return res.json({
+                                logged: true
+                            });
+                        })
+                    }
                 }
-            }
-        })(req, res, next);
+            })(req, res, next);
+        }
     }
 });
 
