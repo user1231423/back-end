@@ -60,6 +60,10 @@ CREATE TABLE IF NOT EXISTS `relations` (
   FOREIGN KEY (`user_2`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 
+
+
+/* 
+Strill to be implemented
 CREATE TABLE IF NOT EXISTS `comments` (
   `comment_id` int(11) NOT NULL AUTO_INCREMENT,
   `comment` varchar(255) NOT NULL,
@@ -70,3 +74,4 @@ CREATE TABLE IF NOT EXISTS `comments` (
   FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY (`post_id`) REFERENCES `posts` (`post_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;
+ */
