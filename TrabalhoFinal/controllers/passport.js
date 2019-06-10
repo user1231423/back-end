@@ -1,8 +1,9 @@
 var LocalStrategy = require('passport-local').Strategy;
 var connection = require('../assets/db/connect');
+var md5 = require('md5');//Encript passwords
 
 // expose this function to our app using module.exports
-module.exports = function(passport) {
+module.exports = function (passport) {
 
     // =========================================================================
     // passport session setup ==================================================
@@ -12,15 +13,15 @@ module.exports = function(passport) {
     // passport needs ability to serialize and unserialize users out of session
 
     // used to serialize the user for the session
-    passport.serializeUser(function(user, done) {
+    passport.serializeUser(function (user, done) {
         return done(null, user.user_id);
     });
 
     // used to deserialize the user
-    passport.deserializeUser(function(id, done) {
+    passport.deserializeUser(function (id, done) {
         // select from users where id = 
         var sql = "SELECT * FROM users WHERE user_id = " + id;
-        connection.query(sql, function(error, results, fields) {
+        connection.query(sql, function (error, results, fields) {
             if (error) {
                 return done(error);
             } else {
@@ -33,34 +34,36 @@ module.exports = function(passport) {
     // LOCAL SIGNUP ============================================================
     // =========================================================================
     passport.use('local-signup', new LocalStrategy({
-            // by default, local strategy uses username and password, we will override with email
-            usernameField: 'email',
-            passwordField: 'password',
-            passReqToCallback: true // allows us to pass back the entire request to the callback
-        },
-        function(req, email, password, done) {
+        // by default, local strategy uses username and password, we will override with email
+        usernameField: 'email',
+        passwordField: 'password',
+        passReqToCallback: true // allows us to pass back the entire request to the callback
+    },
+        function (req, email, password, done) {
 
             //Require data from body needed to register user
             var newUser = {
-                    name: req.body.name,
-                    contacto: req.body.contacto,
-                    data_nasc: req.body.data_nasc
-                }
-                // find a user whose email is the same as the form email
-                // we are checking to see if the user trying to login already exists
+                email: email,
+                password: md5(password),
+                name: req.body.name,
+                contacto: req.body.contacto,
+                data_nasc: req.body.data_nasc
+            }
+            // find a user whose email is the same as the form email
+            // we are checking to see if the user trying to login already exists
             var sql = "SELECT * FROM users WHERE email = ?";
-            connection.query(sql, [email], function(error, results, fields) {
+            connection.query(sql, [email], function (error, results, fields) {
                 if (error) {
                     return done(error);
                 } else if (Object.keys(results).length == 0) { //IF = 0 means it didn't return anything so it does not exist so we will create that user ->
                     var sql = "INSERT INTO users SET email = ?, password = ?, contacto = ?, nome = ?, data_nasc = ?";
-                    connection.query(sql, [email, password, newUser.contacto, newUser.name, newUser.data_nasc], function(error, results, fields) { //Execute sql query and add data into the table users
+                    connection.query(sql, [newUser.email, newUser.password, newUser.contacto, newUser.name, newUser.data_nasc], function (error, results, fields) { //Execute sql query and add data into the table users
                         if (error) {
                             return done(error);
                         } else {
                             var userId = results.insertId;
                             var sql = "SELECT * FROM users WHERE user_id = " + userId;
-                            connection.query(sql, function(error, results, fields) {
+                            connection.query(sql, function (error, results, fields) {
                                 if (error) {
                                     return done(error); //In case of error return the error or error
                                 } else {
@@ -80,14 +83,14 @@ module.exports = function(passport) {
     // LOCAL LOGIN =============================================================
     // =========================================================================
     passport.use('local-login', new LocalStrategy({
-            // by default, local strategy uses username and password, we will override with email
-            usernameField: 'email',
-            passwordField: 'password',
-            passReqToCallback: true // allows us to pass back the entire request to the callback
-        },
-        function(req, email, password, done) { // callback with email and password from our form
+        // by default, local strategy uses username and password, we will override with email
+        usernameField: 'email',
+        passwordField: 'password',
+        passReqToCallback: true // allows us to pass back the entire request to the callback
+    },
+        function (req, email, password, done) { // callback with email and password from our form
             var sql = "SELECT *  FROM users WHERE email = ? AND password = ?";
-            connection.query(sql, [email, password], function(error, results, fields) { //Execute sql query to select all from 
+            connection.query(sql, [email, md5(password)], function (error, results, fields) { //Execute sql query to select all from 
                 if (error) {
                     return done(error);
                 } else {
