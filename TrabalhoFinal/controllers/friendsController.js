@@ -63,15 +63,19 @@ exports.friendRequest = function (req, res) {
     if (!secondUser) {
         res.send("No friend id was sent!");
     } else {
-        //Insert data into the table relations setting relation as sen't friend request
-        var sql = "INSERT INTO relations SET status = ?, user_1 = ?, user_2 = ?";
-        connection.query(sql, [1, id, secondUser], function (error, results, fields) {
-            if (error) {
-                res.send(error);
-            } else {
-                res.json(results.insertId);
-            }
-        });
+        if (id == secondUser) {
+            res.send("Can't add yourself!");
+        } else {
+            //Insert data into the table relations setting relation as sen't friend request
+            var sql = "INSERT INTO relations SET status = ?, user_1 = ?, user_2 = ?";
+            connection.query(sql, [1, id, secondUser], function (error, results, fields) {
+                if (error) {
+                    res.send(error);
+                } else {
+                    res.json(results.insertId);
+                }
+            });
+        }
     }
 }
 
