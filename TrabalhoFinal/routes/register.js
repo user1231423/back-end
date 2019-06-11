@@ -5,10 +5,10 @@ var passport = require('passport');
 // ===========================================================================
 // POST register/login , uses passport to authenticate user and start session=
 /*
-{
-    "email": "123",
-    "password": "123"
-}
+    {
+        "email": "123",
+        "password": "123"
+    }
 */
 // ===========================================================================
 
@@ -43,13 +43,13 @@ router.post('/login', function(req, res, next) {
 // =========================================================================
 // POST register/signup , uses passport to sign up user ====================
 /*
-{
-    "email": "1234",
-    "password": "123",
-    "contacto": 13425,
-    "name": "12",
-    "data_nasc": "2019-04-03"
-}
+    {
+        "email": "1234",
+        "password": "123",
+        "contacto": 13425,
+        "name": "12",
+        "data_nasc": "2019-04-03"
+    }
 */
 // =========================================================================
 router.post('/signup', function(req, res, next) {
