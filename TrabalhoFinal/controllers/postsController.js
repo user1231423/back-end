@@ -184,7 +184,7 @@ exports.postsLikes = function (req, res) {
                     if (error) {
                         res.send(error);
                     } else {
-                        res.send(results.changedRows);
+                        res.json(results.changedRows);
                     }
                 });
             }

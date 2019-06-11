@@ -105,11 +105,12 @@ exports.friendRequest = function (req, res) {
 exports.friendDecision = function (req, res) {
     var decision = req.body.decision; //True or false
     var requestID = req.params.id;
-    if ((decision.length == 0) || (!requestID)) {
+    var id = req.user.user_id;
+    if ((decision == undefined) || (decision.length == 0) || (!requestID)) {
         res.send("Need more data!");
     } else {
-        var sql = "SELECT * FROM relations WHERE relation_id =" + requestID;
-        connection.query(sql, function (error, results, fields) { //Execute query to select * from relations with relation_id that we got from the client
+        var sql = "SELECT * FROM relations WHERE relation_id = ? AND user_2 = ?";
+        connection.query(sql, [requestID,id],function (error, results, fields) { //Execute query to select * from relations with relation_id that we got from the client
             if (error) {
                 res.send(error);
             } else {
