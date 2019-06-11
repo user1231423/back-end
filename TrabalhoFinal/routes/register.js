@@ -2,9 +2,16 @@ var express = require('express');
 var router = express.Router();
 var passport = require('passport');
 
-// =========================================================================
-// POST register/login , uses passport to authenticate user and start session ======
-// =========================================================================
+// ===========================================================================
+// POST register/login , uses passport to authenticate user and start session=
+/*
+{
+    "email": "123",
+    "password": "123"
+}
+*/
+// ===========================================================================
+
 router.post('/login', function(req, res, next) {
     if(req.user){
         res.send("Logout first!");

@@ -35,13 +35,24 @@ exports.uploadPostImg = function (req, res) {
                             if (results.length != 0) {
                                 res.send("Post already has image");
                             } else {
-                                var filePath = req.file.path;
-                                var sql = "INSERT INTO imagem_posts SET caminho = ?, post_id = ?";
-                                connection.query(sql, [filePath, postID], function (error, results, fields) {
-                                    if (error) {
+                                var sql = "SELECT * FROM posts WHERE post_id = " + postID;
+                                connection.query(sql, function(error,results,fields){
+                                    if(error){
                                         res.send(error);
-                                    } else {
-                                        res.json(results.insertId);
+                                    }else{
+                                        if(results.length != 0){
+                                            var filePath = req.file.path;
+                                            var sql = "INSERT INTO imagem_posts SET caminho = ?, post_id = ?";
+                                            connection.query(sql, [filePath, postID], function (error, results, fields) {
+                                                if (error) {
+                                                    res.send(error);
+                                                } else {
+                                                    res.json(results.insertId);
+                                                }
+                                            });
+                                        }else{
+                                            res.send("No post with given id");
+                                        }
                                     }
                                 });
                             }
@@ -74,15 +85,26 @@ exports.uploadUserImg = function (req, res) {
                             if (results.length != 0) {
                                 res.send("User already has image!");
                             } else {
-                                var filePath = req.file.path;
-                                var sql = "INSERT INTO imagem_user SET caminho = ?, user_id = ?";
-                                connection.query(sql, [filePath, userID], function (error, results, fields) {
-                                    if (error) {
+                                var sql = "SELECT * from users WHERE user_id = " + userID;
+                                connection.query(sql, function(error,results,fields){
+                                    if(error){
                                         res.send(error);
-                                    } else {
-                                        res.json(results.insertId);
+                                    }else{
+                                        if(results.length != 0){
+                                            var filePath = req.file.path;
+                                            var sql = "INSERT INTO imagem_user SET caminho = ?, user_id = ?";
+                                            connection.query(sql, [filePath, userID], function (error, results, fields) {
+                                                if (error) {
+                                                    res.send(error);
+                                                } else {
+                                                    res.json(results.insertId);
+                                                }
+                                            });
+                                        }else{
+                                            res.send("No user with given id!");
+                                        }
                                     }
-                                });
+                                })
                             }
                         }
                     });
