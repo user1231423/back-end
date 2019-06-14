@@ -30,7 +30,7 @@ router.delete('/logout', authMiddleware, user_controller.userlogout);
     }
 */
 // =========================================================================
-router.post('/find', user_controller.findUser);
+router.post('/find', authMiddleware, user_controller.findUser);
 
 // =========================================================================
 // GET users/person/id, gets another person profile ========================
@@ -41,17 +41,17 @@ router.get('/person/:id', authMiddleware, user_controller.getProfile);
 // POST users/image/:id, upload image to server and inserts location on db =
 // id is the user id
 // =========================================================================
-router.post('/image/:id', authMiddleware , imgController.uploadUserImg);
+router.post('/image/:id', authMiddleware, imgController.uploadUserImg);
 
 // =========================================================================
 // DELETE users/image, deletes current user image ==========================
 // =========================================================================
-router.delete('/image', authMiddleware , imgController.deleteUserImg);
+router.delete('/image', authMiddleware, imgController.deleteUserImg);
 
 // =========================================================================
 // PUT users/image, updates user image =====================================
 // =========================================================================
-router.put('/image', authMiddleware , imgController.updateUserImg);
+router.put('/image', authMiddleware, imgController.updateUserImg);
 
 module.exports = router;
 
