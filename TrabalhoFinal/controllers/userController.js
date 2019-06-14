@@ -46,7 +46,7 @@ exports.findUser = function(req,res){
                     }
                 }
                 if(retornar.length == 0){
-                    res.send("No results!");
+                    res.json([]);
                 }else{
                     res.json(retornar);
                 }

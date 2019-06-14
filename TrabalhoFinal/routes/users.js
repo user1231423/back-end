@@ -30,7 +30,7 @@ router.delete('/logout', authMiddleware, user_controller.userlogout);
     }
 */
 // =========================================================================
-router.get('/find', authMiddleware, user_controller.findUser);
+router.post('/find', user_controller.findUser);
 
 // =========================================================================
 // GET users/person/id, gets another person profile ========================
