@@ -1,6 +1,7 @@
 // require and instantiate express
 var express = require('express');
 var app = express();
+var uuidv1 = require('uuid/v1');
 
 app.set('view engine', 'ejs'); // set up ejs for templating
 
@@ -21,7 +22,31 @@ app.get('/', function (req, res) {
 
 var io = require('socket.io')(server);
 
-// Registar o evento Connection
+var connections = [];
 
+// Registar o evento Connection
+io.on('connection', function (socket) {
+
+    socket.on('connected', function(){
+        console.log('A user connected');
+        socket.username = "User - " + uuidv1();
+        connections.push(socket.username);
+        io.emit('connected', { users: connections });
+        console.log("Users connected: ", connections.length);
+        console.log(connections);
+    });
+
+    socket.on('send_message', (data) => {
+        //Broadcast the new message
+        io.sockets.emit('broadcast_message', { message: data.message, username: socket.username });
+    });
+
+    socket.on('disconnect', function () {
+        console.log('User disconnected');
+        connections.splice(connections.indexOf(socket), 1);
+        console.log("Users connected: ", connections.length);
+        io.emit('connected',{users: connections});
+    });
+});
 
 
