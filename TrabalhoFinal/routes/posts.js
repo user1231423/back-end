@@ -22,7 +22,7 @@ router.post('/create', authMiddleware, posts_controller.createPost);
 // DELETE /posts/delete, deletes post ======================================
 // id is the post id
 // =========================================================================
-router.delete('/delete/:id', authMiddleware, posts_controller.deletePost);
+router.post('/delete', authMiddleware,posts_controller.deletePost);
 
 // =========================================================================
 // PUT /posts/update/:id, updates post data ================================
@@ -49,13 +49,13 @@ router.get('/friends', authMiddleware, posts_controller.friendsPosts);
 // PUT posts/likes, increment post likes ===================================
 // id is the post id
 // =========================================================================
-router.put('/likes/:id', authMiddleware, posts_controller.postsLikes);
+router.put('/likes', authMiddleware, posts_controller.postsLikes);
 
 // =========================================================================
 // PUT posts/dislikes, increment post dislikes =============================
 // id is the psot id
 // =========================================================================
-router.put('/dislikes/:id', authMiddleware, posts_controller.postsDislikes);
+router.put('/dislikes', authMiddleware, posts_controller.postsDislikes);
 
 // =========================================================================
 // POST posts/image/:id, upload image to server and inserts location on db =

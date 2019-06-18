@@ -14,7 +14,6 @@ var postsRouter = require('./routes/posts');
 var messageRouter = require('./routes/messages');
 
 var app = express();
-
 //Components to use
 app.use(cors({ credentials: true, origin: 'http://localhost:8080' })); //USE THIS OR NO COOKIS WILL BE ALLOWED BY CORS
 app.use(express.json());

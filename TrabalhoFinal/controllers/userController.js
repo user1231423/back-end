@@ -65,7 +65,7 @@ exports.userlogout = function(req, res) {
 
 //Get profile to another user
 exports.getProfile = function(req,res){
-    var id = req.params.id;
+    var id = req.body.id;
     var sql = "SELECT users.user_id, users.contacto, users.nome, users.data_nasc, imagem_user.caminho FROM users LEFT JOIN imagem_user ON imagem_user.user_id = users.user_id WHERE users.user_id = " + id;
     connection.query(sql, function(error,results,fields){
         if (error){

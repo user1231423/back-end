@@ -29,7 +29,7 @@ exports.createPost = function (req, res) {
 
 //Delete post, gets id from body
 exports.deletePost = function (req, res) {
-    var id = req.params.id;
+    var id = req.body.id;
     if (!id) { //if no id is sent
         res.send("No id sent");
     } else {
@@ -152,7 +152,7 @@ exports.userPosts = function (req, res) {
 exports.friendsPosts = function (req, res) {
     var id = req.user.user_id;
     //Select all posts from the current user friends ordered by date from the most recent to the oldest
-    var sql = "SELECT users.user_id, users.nome, users.contacto, users.data_nasc, imagem_user.caminho AS img_user,posts.post_id, posts.title, posts.description, posts.date, posts.likes, posts.dislikes, imagem_posts.caminho AS img_post FROM posts LEFT JOIN imagem_posts ON imagem_posts.post_id = posts.post_id INNER JOIN users ON posts.user_id = users.user_id LEFT JOIN imagem_user on imagem_user.user_id = users.user_id INNER JOIN relations ON users.user_id = relations.user_2 AND relations.status = 2 AND relations.user_1 = ? ORDER BY posts.date DESC";
+    var sql = "SELECT users.user_id, users.nome, users.contacto, users.data_nasc, imagem_user.caminho AS img_user,posts.post_id, posts.title, posts.description, posts.date, posts.likes, posts.dislikes, imagem_posts.caminho AS img_post FROM posts LEFT JOIN imagem_posts ON imagem_posts.post_id = posts.post_id INNER JOIN users ON posts.user_id = users.user_id LEFT JOIN imagem_user on imagem_user.user_id = users.user_id INNER JOIN relations ON users.user_id = relations.user_2 AND relations.status = 2 AND relations.user_1 = ? ORDER BY posts.date ASC";
     connection.query(sql, [id], function (error, results, fields) {
         if (error) {
             res.send(error);
@@ -168,7 +168,7 @@ exports.friendsPosts = function (req, res) {
 
 //Increment likes to the post
 exports.postsLikes = function (req, res) {
-    var postID = req.params.id;
+    var postID = req.body.id;
     var sql = "SELECT * FROM posts WHERE post_id = " + postID;
     connection.query(sql, function (error, results, fields) {
         if (error) {
@@ -194,7 +194,7 @@ exports.postsLikes = function (req, res) {
 
 //Increment dislikes to the post
 exports.postsDislikes = function (req, res) {
-    var postID = req.params.id;
+    var postID = req.body.id;
     var sql = "SELECT * FROM posts WHERE post_id = " + postID;
     connection.query(sql, function (error, results, fields) {
         if (error) {
