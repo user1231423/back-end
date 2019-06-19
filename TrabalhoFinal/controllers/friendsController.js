@@ -9,11 +9,11 @@ var connection = require('../assets/db/connect');
 // ========================================================================================================================
 
 //Get the friend list for current user
-exports.friendList = function (req, res) {
+exports.friendList = function(req, res) {
     var id = req.user.user_id;
     //This query will return the list of friends to the current user
     var sql = "SELECT users.user_id, users.nome, users.contacto, users.data_nasc, imagem_user.caminho FROM users LEFT JOIN imagem_user ON imagem_user.user_id = users.user_id INNER JOIN relations on users.user_id = relations.user_2 AND relations.status = 2 WHERE relations.user_1 = " + id;
-    connection.query(sql, function (error, results, fields) {
+    connection.query(sql, function(error, results, fields) {
         if (error) {
             res.send(error);
         } else {
@@ -27,11 +27,11 @@ exports.friendList = function (req, res) {
 }
 
 //Search friend
-exports.findFriend = function (req, res) {
+exports.findFriend = function(req, res) {
     var id = req.user.user_id;
     //This query will return all users that are friend to the current user
     var sql = "SELECT users.user_id, users.nome, users.contacto, users.data_nasc, imagem_user.caminho FROM users LEFT JOIN imagem_user ON imagem_user.user_id = users.user_id INNER JOIN relations on users.user_id = relations.user_2 AND relations.status = 2 WHERE relations.user_1 = " + id;
-    connection.query(sql, function (error, results, fields) {
+    connection.query(sql, function(error, results, fields) {
         if (error) {
             res.send(error);
         } else {
@@ -57,7 +57,7 @@ exports.findFriend = function (req, res) {
 }
 
 //Friend request from session user to another user
-exports.friendRequest = function (req, res) {
+exports.friendRequest = function(req, res) {
     var id = req.user.user_id;
     var secondUser = req.params.id;
     if (!secondUser) {
@@ -67,20 +67,20 @@ exports.friendRequest = function (req, res) {
             res.send("Can't add yourself!");
         } else {
             var sql = "SELECT users.user_id, users.nome, users.contacto, users.data_nasc, imagem_user.caminho FROM users LEFT JOIN imagem_user ON imagem_user.user_id = users.user_id INNER JOIN relations on users.user_id = relations.user_2 AND relations.status = 1 WHERE relations.user_1 = ? AND relations.user_2 = ?";
-            connection.query(sql, [id, secondUser], function (error, results, fields) {
+            connection.query(sql, [id, secondUser], function(error, results, fields) {
                 if (error) {
                     res.send(error);
                 } else {
                     if (results.length == 0) {
                         var sql = "SELECT users.user_id, users.nome, users.contacto, users.data_nasc, imagem_user.caminho FROM users LEFT JOIN imagem_user ON imagem_user.user_id = users.user_id INNER JOIN relations on users.user_id = relations.user_2 AND relations.status = 2 WHERE relations.user_1 = ? AND relations.user_2 = ?";
-                        connection.query(sql, [id, secondUser], function (error, results, fields) {
+                        connection.query(sql, [id, secondUser], function(error, results, fields) {
                             if (error) {
                                 res.send(error);
                             } else {
                                 if (results.length == 0) {
                                     //Insert data into the table relations setting relation as sen't friend request
                                     var sql = "INSERT INTO relations SET status = ?, user_1 = ?, user_2 = ?";
-                                    connection.query(sql, [1, id, secondUser], function (error, results, fields) {
+                                    connection.query(sql, [1, id, secondUser], function(error, results, fields) {
                                         if (error) {
                                             res.send(error);
                                         } else {
@@ -102,7 +102,7 @@ exports.friendRequest = function (req, res) {
 }
 
 //Friend decision, this is the user deciding to accept or not the friend request
-exports.friendDecision = function (req, res) {
+exports.friendDecision = function(req, res) {
     var decision = req.body.decision; //True or false
     var requestID = req.params.id;
     var id = req.user.user_id;
@@ -110,7 +110,7 @@ exports.friendDecision = function (req, res) {
         res.send("Need more data!");
     } else {
         var sql = "SELECT * FROM relations WHERE relation_id = ? AND user_2 = ?";
-        connection.query(sql, [requestID,id],function (error, results, fields) { //Execute query to select * from relations with relation_id that we got from the client
+        connection.query(sql, [requestID, id], function(error, results, fields) { //Execute query to select * from relations with relation_id that we got from the client
             if (error) {
                 res.send(error);
             } else {
@@ -123,20 +123,19 @@ exports.friendDecision = function (req, res) {
                         if (decision == true) {
                             //Makes friend who sent friend to the one who received
                             var sql = "UPDATE relations SET status = 2 WHERE relation_id = " + requestID;
-                            connection.query(sql, function (error, results, fields) {
+                            connection.query(sql, function(error, results, fields) {
                                 if (error) {
                                     res.send(error);
                                 } else {
                                     res.json({
                                         friends: true
-                                    }
-                                    );
+                                    });
                                 }
                             });
                         } else {
                             //Set request as denied
                             var sql = "UPDATE relations SET status = 3 WHERE relation_id = " + requestID;
-                            connection.query(sql, function (error, results, fields) {
+                            connection.query(sql, function(error, results, fields) {
                                 if (error) {
                                     res.send(error);
                                 } else {
@@ -154,14 +153,14 @@ exports.friendDecision = function (req, res) {
 }
 
 //Delete friend request or blocked friend or frienship
-exports.deleteRequest = function (req, res) {
+exports.deleteRequest = function(req, res) {
     var request = req.params.id;
     if (!request) {
         res.send("No request id was sent!");
     } else {
         //Check if there is any relation with the given id
         var sql = "SELECT * FROM relations WHERE relation_id = " + request;
-        connection.query(sql, function (error, results, fields) {
+        connection.query(sql, function(error, results, fields) {
             if (error) {
                 res.send(error);
             } else {
@@ -170,7 +169,7 @@ exports.deleteRequest = function (req, res) {
                 } else {
                     //if there is a relation then we will delete her
                     var sql = "DELETE FROM relations WHERE relation_id = " + request;
-                    connection.query(sql, function (error, results, fields) {
+                    connection.query(sql, function(error, results, fields) {
                         if (error) {
                             res.send(error);
                         } else {
@@ -184,7 +183,7 @@ exports.deleteRequest = function (req, res) {
 }
 
 //Block one user
-exports.blockPerson = function (req, res) {
+exports.blockPerson = function(req, res) {
     var personID = req.params.personID;
     var id = req.user.user_id;
     if (!personID) {
@@ -195,7 +194,7 @@ exports.blockPerson = function (req, res) {
         } else {
             //Check if the user is already blocked
             var sql = "SELECT * FROM relations WHERE user_1 = ? AND user_2 = ? AND status = 4";
-            connection.query(sql, [id, personID], function (error, results, fields) {
+            connection.query(sql, [id, personID], function(error, results, fields) {
                 if (error) {
                     res.send(error);
                 } else {
@@ -204,19 +203,19 @@ exports.blockPerson = function (req, res) {
                     } else {
                         //Delete relations beteen current user and the users he is blocking
                         var sql = "DELETE FROM relations WHERE user_1 = ? AND user_2 = ?";
-                        connection.query(sql, [id, personID, 2], function (error, results, fields) {
+                        connection.query(sql, [id, personID, 2], function(error, results, fields) {
                             if (error) {
                                 res.send(error);
                             } else {
                                 //Delete the user he is blocking and the current user relation
                                 var sql = "DELETE FROM relations WHERE user_1 = ? AND user_2 = ?";
-                                connection.query(sql, [personID, id], function (error, results, fields) {
+                                connection.query(sql, [personID, id], function(error, results, fields) {
                                     if (error) {
                                         res.send(error);
                                     } else {
                                         //Insert blocked relation between users
                                         var sql = "INSERT INTO relations SET status = ?, user_1 = ?, user_2 = ?";
-                                        connection.query(sql, [4, id, personID], function (error, results, fields) {
+                                        connection.query(sql, [4, id, personID], function(error, results, fields) {
                                             if (error) {
                                                 res.send(error);
                                             } else {
@@ -235,11 +234,11 @@ exports.blockPerson = function (req, res) {
 }
 
 //Get the list of blocked users by the current user
-exports.blockList = function (req, res) {
+exports.blockList = function(req, res) {
     var id = req.user.user_id;
     //join info from table users and table relations to get the list of users blocked
     var sql = "SELECT users.user_id, users.nome, users.contacto, users.data_nasc, imagem_user.caminho FROM users LEFT JOIN imagem_user ON imagem_user.user_id = users.user_id INNER JOIN relations on users.user_id = relations.user_2 AND relations.status = 4 WHERE relations.user_1 = " + id;
-    connection.query(sql, function (error, results, fields) {
+    connection.query(sql, function(error, results, fields) {
         if (results.length == 0) {
             res.send("No blocked users");
         } else {
@@ -249,11 +248,11 @@ exports.blockList = function (req, res) {
 }
 
 //Gets the list of friend request sen't to the current user
-exports.receivedRequests = function (req, res) {
+exports.receivedRequests = function(req, res) {
     var id = req.user.user_id;
     //Join data from talbe users and relations to return the users that sent the current user friend requests
     var sql = "SELECT users.user_id, users.nome, users.contacto, users.data_nasc, imagem_user.caminho FROM users LEFT JOIN imagem_user ON imagem_user.user_id = users.user_id INNER JOIN relations on users.user_id = relations.user_1 AND relations.status = 1 WHERE relations.user_2 = " + id;
-    connection.query(sql, function (error, results, fields) {
+    connection.query(sql, function(error, results, fields) {
         if (error) {
             res.send(error);
         } else {
@@ -268,17 +267,34 @@ exports.receivedRequests = function (req, res) {
 }
 
 //Gets the list of the current user sent friend requests
-exports.sentRequests = function (req, res) {
+exports.sentRequests = function(req, res) {
     var id = req.user.user_id;
     //Join data from talbe users and relations to return the users to who the current user sen't friend requests
     var sql = "SELECT users.user_id, users.nome, users.contacto, users.data_nasc, imagem_user.caminho FROM users LEFT JOIN imagem_user ON imagem_user.user_id = users.user_id INNER JOIN relations on users.user_id = relations.user_2 AND relations.status = 1 WHERE relations.user_1 = " + id;
-    connection.query(sql, function (error, results, fields) {
+    connection.query(sql, function(error, results, fields) {
         if (error) {
             res.send(error);
         } else {
             //If results lenght is 0 means he user didn't sent any request
             if (results.length == 0) {
                 res.send("No requests sent!");
+            } else {
+                res.json(results);
+            }
+        }
+    });
+}
+
+exports.personFriendList = function(req, res) {
+    var id = req.body.id;
+    //This query will return the list of friends to the current user
+    var sql = "SELECT users.user_id, users.nome, users.contacto, users.data_nasc, imagem_user.caminho FROM users LEFT JOIN imagem_user ON imagem_user.user_id = users.user_id INNER JOIN relations on users.user_id = relations.user_2 AND relations.status = 2 WHERE relations.user_1 = " + id;
+    connection.query(sql, function(error, results, fields) {
+        if (error) {
+            res.send(error);
+        } else {
+            if (results.length == 0) {
+                res.send("No friends!");
             } else {
                 res.json(results);
             }

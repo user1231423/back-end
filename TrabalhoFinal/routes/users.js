@@ -35,7 +35,7 @@ router.post('/find', authMiddleware, user_controller.findUser);
 // =========================================================================
 // GET users/person/id, gets another person profile ========================
 // =========================================================================
-router.post('/person', authMiddleware,user_controller.getProfile);
+router.post('/person', authMiddleware, user_controller.getProfile);
 
 // =========================================================================
 // POST users/image/:id, upload image to server and inserts location on db =

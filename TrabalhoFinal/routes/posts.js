@@ -22,7 +22,7 @@ router.post('/create', authMiddleware, posts_controller.createPost);
 // DELETE /posts/delete, deletes post ======================================
 // id is the post id
 // =========================================================================
-router.post('/delete', authMiddleware,posts_controller.deletePost);
+router.post('/delete', authMiddleware, posts_controller.deletePost);
 
 // =========================================================================
 // PUT /posts/update/:id, updates post data ================================
@@ -33,7 +33,7 @@ router.post('/delete', authMiddleware,posts_controller.deletePost);
     }
 */
 // =========================================================================
-router.put('/update/:id', authMiddleware, posts_controller.updatePost);
+router.put('/update', authMiddleware, posts_controller.updatePost);
 
 // =========================================================================
 // GET /posts/show, requests current user posts ============================
@@ -61,13 +61,23 @@ router.put('/dislikes', authMiddleware, posts_controller.postsDislikes);
 // POST posts/image/:id, upload image to server and inserts location on db =
 // id is the post id
 // =========================================================================
-router.post('/image/:id', authMiddleware , imgController.uploadPostImg);
+router.post('/image/:id', authMiddleware, imgController.uploadPostImg);
 
 // =========================================================================
 // DELETE posts/image/:id, deletes post image ==============================
 // id is the post id
 // =========================================================================
-router.delete('/image/:id', authMiddleware , imgController.deletePostImg);
+router.delete('/image/:id', authMiddleware, imgController.deletePostImg);
+
+// =========================================================================
+// POST posts/info, gets all info about one post ===========================
+// =========================================================================
+router.post('/info', authMiddleware, posts_controller.postInfo);
+
+// =========================================================================
+// POST posts/info, gets posts of one person ===============================
+// =========================================================================
+router.post('/person', authMiddleware, posts_controller.personPosts);
 
 module.exports = router;
 //Check if user is authenticated

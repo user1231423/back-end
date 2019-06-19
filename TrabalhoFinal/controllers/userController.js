@@ -3,17 +3,17 @@ var connection = require('../assets/db/connect');
 //Request user and sends it as json to client
 exports.sendUser = function(req, res, next) {
     var id = req.user.user_id;
-    if(!id){
+    if (!id) {
         res.send("No id given");
-    }else{
+    } else {
         var sql = "SELECT users.user_id, users.contacto, users.nome, users.data_nasc, imagem_user.caminho FROM users LEFT JOIN imagem_user ON imagem_user.user_id = users.user_id WHERE users.user_id = " + id;
-        connection.query(sql, function(error,results,fields){
-            if(error){
+        connection.query(sql, function(error, results, fields) {
+            if (error) {
                 res.send(error);
-            }else{
-                if(results.length == 0){
+            } else {
+                if (results.length == 0) {
                     res.send("No user with given id!");
-                }else{
+                } else {
                     res.json(results[0]);
                 }
             }
@@ -29,9 +29,9 @@ exports.sendWelcoming = function(req, res) {
 }
 
 //Find user in the table users
-exports.findUser = function(req,res){
+exports.findUser = function(req, res) {
     var sql = "SELECT users.user_id, users.contacto, users.nome, users.data_nasc, imagem_user.caminho FROM users LEFT JOIN imagem_user ON imagem_user.user_id = users.user_id";
-    connection.query(sql, function (error, results, fields) { 
+    connection.query(sql, function(error, results, fields) {
         if (error) {
             res.send(error);
         } else {
@@ -40,14 +40,14 @@ exports.findUser = function(req,res){
             } else {
                 var word = req.body.search;
                 var retornar = [];
-                for (var i = 0; i < results.length; i++){
-                    if(results[i].nome == word){
+                for (var i = 0; i < results.length; i++) {
+                    if (results[i].nome == word) {
                         retornar.push(results[i]);
                     }
                 }
-                if(retornar.length == 0){
+                if (retornar.length == 0) {
                     res.json([]);
-                }else{
+                } else {
                     res.json(retornar);
                 }
             }
@@ -64,16 +64,16 @@ exports.userlogout = function(req, res) {
 }
 
 //Get profile to another user
-exports.getProfile = function(req,res){
+exports.getProfile = function(req, res) {
     var id = req.body.id;
     var sql = "SELECT users.user_id, users.contacto, users.nome, users.data_nasc, imagem_user.caminho FROM users LEFT JOIN imagem_user ON imagem_user.user_id = users.user_id WHERE users.user_id = " + id;
-    connection.query(sql, function(error,results,fields){
-        if (error){
+    connection.query(sql, function(error, results, fields) {
+        if (error) {
             res.send(error);
-        }else{
-            if(results.length == 0){
+        } else {
+            if (results.length == 0) {
                 res.send("No user with given id!");
-            }else{
+            } else {
                 res.json(results[0]);
             }
         }

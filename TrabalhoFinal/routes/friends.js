@@ -61,6 +61,11 @@ router.get('/requests', authMiddleware, friends_controller.receivedRequests);
 // =========================================================================
 router.get('/sentrequests', authMiddleware, friends_controller.sentRequests);
 
+// =========================================================================
+// POST /friends/friendlist gets a list of a person friends ====================
+// =========================================================================
+router.post('/friendlist', authMiddleware, friends_controller.personFriendList);
+
 module.exports = router;
 
 //Check if user is authenticated
