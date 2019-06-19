@@ -23,7 +23,7 @@ router.get('/search', authMiddleware, friends_controller.findFriend);
 // POST /friends/request sends friend request to another user ==============
 // id is another user id
 // =========================================================================
-router.post('/request/:id', authMiddleware, friends_controller.friendRequest);
+router.post('/request', authMiddleware, friends_controller.friendRequest);
 
 // =========================================================================
 // PUT /friends/decision sets the decision to add or not to add friend =====
@@ -33,13 +33,13 @@ router.post('/request/:id', authMiddleware, friends_controller.friendRequest);
     }
 */
 // =========================================================================
-router.put('/decision/:id', authMiddleware, friends_controller.friendDecision);
+router.put('/decision', authMiddleware, friends_controller.friendDecision);
 
 // =========================================================================
 // DELETE /friends/request Deletes friend request ==========================
 // --------------- ! Need relation id on params ! --------------------------
 // =========================================================================
-router.delete('/request/:id', authMiddleware, friends_controller.deleteRequest);
+router.post('/request/delete', authMiddleware, friends_controller.deleteRequest);
 
 // =========================================================================
 // POST /friends/block blocks user =========================================
@@ -62,9 +62,24 @@ router.get('/requests', authMiddleware, friends_controller.receivedRequests);
 router.get('/sentrequests', authMiddleware, friends_controller.sentRequests);
 
 // =========================================================================
-// POST /friends/friendlist gets a list of a person friends ====================
+// POST /friends/friendlist gets a list of a person friends ================
 // =========================================================================
 router.post('/friendlist', authMiddleware, friends_controller.personFriendList);
+
+// =========================================================================
+// POST /friends/person/followers gets a list of all persons following =====
+// =========================================================================
+router.post('/person/followers', authMiddleware, friends_controller.personFollowers);
+
+// =========================================================================
+// POST /friends/followers gets a list of all followers of the current user=
+// =========================================================================
+router.get('/followers', authMiddleware, friends_controller.userFollowers);
+
+// =========================================================================
+// POST /friends/check/follow checks if user is following another ==========
+// =========================================================================
+router.post('/check/follow', authMiddleware, friends_controller.checkFriendship);
 
 module.exports = router;
 
