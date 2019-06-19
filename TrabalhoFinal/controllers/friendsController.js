@@ -366,7 +366,7 @@ exports.checkFriendship = function(req, res) {
                         }
                     });
                 } else {
-                    res.json({ follow: true, relationID: results[0].relation_id });
+                    res.json({ follow: "Pending", relationID: results[0].relation_id });
                 }
             }
         });
