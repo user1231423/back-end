@@ -27,6 +27,7 @@ exports.uploadPostImg = function (req, res) {
                 if (!req.file) {
                     res.send("No file given!");
                 } else {
+                    console.log(req.file);
                     var sql = "SELECT * FROM imagem_posts WHERE post_id = " + postID;
                     connection.query(sql, function (error, results, fields) {
                         if (error) {
