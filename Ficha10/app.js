@@ -5,6 +5,9 @@ var uuidv1 = require('uuid/v1');
 var fs = require('fs');
 var multer = require('multer');
 var bodyParsrer = require('body-parser');
+var rimraf = require("rimraf");
+var base64Img = require('base64-img');
+
 
 //Multer config
 var storage = multer.diskStorage({
@@ -40,14 +43,14 @@ app.get('/', function (req, res) {
 });
 
 //Image upload route
-app.post('/upload',function(req,res){
+app.post('/upload', function (req, res) {
     upload(req, res, function (err) {
         if (err) {
             res.status(406).send("Error on upload!");
-        }else{
+        } else {
             res.json({ file: req.file.filename });
         }
-      })
+    })
 })
 
 //Array of connections to app
@@ -56,6 +59,7 @@ var connections = [];
 //Path to file with chat history
 var historyDir = './history';
 var historyFile = './history/history.txt';
+var imgDir = './public/images'
 
 //Check if file and dir exists if not then we will create it
 if (fs.existsSync(historyDir)) {
@@ -66,11 +70,16 @@ if (fs.existsSync(historyDir)) {
     fs.mkdirSync(historyDir);
 }
 
+//Check if image dir exists
+if (!fs.existsSync(imgDir)) {
+    fs.mkdirSync(imgDir);
+}
+
 //Create write stream with append
 var writeStream = fs.createWriteStream(historyFile, { 'flags': 'a' });
 
 //Register event Connection
-io.on('connection' ,function (socket) {
+io.on('connection', function (socket) {
     socket.on('connected', function () {
         socket.username = "User + " + uuidv1();
         connections.push(socket.username);
@@ -98,6 +107,11 @@ io.on('connection' ,function (socket) {
             var message = "Has left the chat!";
             io.sockets.emit('broadcast_message', { message: message, username: socket.username, importance: 1 });
             connections.splice(connections.indexOf(socket.username), 1);
+
+            //If the ammount of users on the chat is 0 we will delete all the images
+            if (connections.length == 0) {
+                rimraf.sync(imgDir + '/*');
+            }
             io.emit('connected', { users: connections });
             writeMessage = socket.username + " " + message + "\n";
             writeStream.write(writeMessage);
@@ -137,6 +151,14 @@ io.on('connection' ,function (socket) {
 
     //Broadcast image
     socket.on('image_upload', (data) => {
-        io.emit('broadcast_image', { img: data.img, username: socket.username});
+        if (socket.username != undefined) {
+            io.emit('broadcast_image', { img: data.img, username: socket.username });
+            //Image to base64 to store as string
+            var img64 = base64Img.base64Sync('./public/images/' + data.img);
+            writeMessage = socket.username + " sent the image: " + img64 + "\n";
+            writeStream.write(writeMessage);
+        } else {
+            io.emit('reload');
+        }
     });
 });

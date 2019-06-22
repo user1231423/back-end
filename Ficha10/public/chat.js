@@ -88,8 +88,7 @@ $(function () {
     //Listen on new_message
     socket.on('broadcast_image', function (data) {
         imgSrc = "./images/" + data.img;
-        chatroom.append($('<td scope="row">').append('<p style="font-weight: bold">' + data.username + ": </p>" + '<img style="max-height: 5rem; max-width: 5rem" id="userImg">'));
-        $("#userImg").attr("src",imgSrc);
+        chatroom.append($('<tr scope="row">').append('<p style="font-weight: bold">' + data.username + ": </p>" + '<img style="max-height: 5rem; max-width: 5rem" src=' + imgSrc +'>'));
     });
 
 });
