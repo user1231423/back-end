@@ -8,6 +8,11 @@
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="/socket.io/socket.io.js"></script>
     <title> Chat App</title>
+    <style>
+        .cursor-pointer {
+            cursor: pointer;
+        }
+    </style>
 </head>
 
 <body>
@@ -28,7 +33,7 @@
                     </div>
                 </div>
 
-                <table class="table  table-striped" style="border-collapse:separate; border-spacing: 0 15px">
+                <table id="users" class="table  table-striped" style="border-collapse:separate; border-spacing: 0 15px">
                     <tbody id="userList">
                     </tbody>
                 </table>
@@ -38,7 +43,7 @@
             <div class="col-sm-8 scroll">
                 <div class="chatbody" id="chatWindow" style="height: 30rem; overflow-y: auto">
 
-                    <table class="table" style="border-collapse:separate; border-spacing: 0 15px">
+                    <table id="chat" class="table" style="border-collapse:separate; border-spacing: 0 15px">
                         <tbody id="chatroom">
                         </tbody>
                     </table>

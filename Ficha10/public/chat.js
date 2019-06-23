@@ -10,6 +10,8 @@ $(function () {
     var changeName = $('#change_name');
     var userName = $('#new_name');
     var image = $('#image');
+    var users = $('#users');
+    var chat = $('#chat');
 
     //Emits connection
     socket.emit('connected');
@@ -22,7 +24,7 @@ $(function () {
     socket.on('connected', function (data) {
         userList.empty();
         for (var i = 0; i < data.users.length; i++) {
-            userList.append($('<tr>').append('<p style="font-weight: bold">' + data.users[i] + ": </p>"));
+            userList.append($('<tr>').append('<p id="userName" style="font-weight: bold" class="cursor-pointer">' + data.users[i] + "</p>"));
         }
     });
 
@@ -38,13 +40,15 @@ $(function () {
     //Listen on new_message
     socket.on('broadcast_message', function (data) {
         if (data.importance == 1) {
-            chatroom.append($('<tr bgcolor="#ff9999">').append('<p style="font-weight: bold">' + data.username + ": </p>" + '<p>' + data.message + '</p>'));
+            chatroom.append($('<tr bgcolor="#ff9999" class="cursor-pointer">').append('<p style="font-weight: bold">' + data.username + ": </p>" + '<p>' + data.message + '</p>'));
         } else if (data.importance == 2) {
-            chatroom.append($('<tr bgcolor="#b3c6ff">').append('<p style="font-weight: bold">' + data.username + ": </p>" + '<p>' + data.message + '</p>'));
+            chatroom.append($('<tr bgcolor="#b3c6ff" class="cursor-pointer">').append('<p style="font-weight: bold">' + data.username + ": </p>" + '<p>' + data.message + '</p>'));
         } else if (data.importance == 3) {
-            chatroom.append($('<tr bgcolor="#f2f2f2">').append('<p style="font-weight: bold">' + data.username + ": </p>" + '<p>' + data.message + '</p>'));
+            chatroom.append($('<tr bgcolor="#f2f2f2" class="cursor-pointer">').append('<p style="font-weight: bold">' + data.username + ": </p>" + '<p>' + data.message + '</p>'));
+        }else if(data.importance == 4){
+            chatroom.append($('<tr bgcolor="#80ffbf" class="cursor-pointer">').append('<p style="font-weight: bold">' + data.username + ": </p>" + '<p>' + data.message + '</p>'));
         } else {
-            chatroom.append($('<tr scope="row">').append('<p style="font-weight: bold">' + data.username + ": </p>" + '<p>' + data.message + '</p>'));
+            chatroom.append($('<tr scope="row" class="cursor-pointer">').append('<p style="font-weight: bold">' + data.username + ": </p>" + '<p>' + data.message + '</p>'));
         }
         message.val('');
     });
@@ -88,7 +92,15 @@ $(function () {
     //Listen on new_message
     socket.on('broadcast_image', function (data) {
         imgSrc = "./images/" + data.img;
-        chatroom.append($('<tr scope="row">').append('<p style="font-weight: bold">' + data.username + ": </p>" + '<img style="max-height: 5rem; max-width: 5rem" src=' + imgSrc +'>'));
+        chatroom.append($('<tr scope="row" class="cursor-pointer">').append('<p style="font-weight: bold">' + data.username + ": </p>" + '<img style="max-height: 5rem; max-width: 5rem" src=' + imgSrc +'>'));
     });
 
+    users.on("click", "tr", function(e) {
+        message.val('@' + $(this).text() + ': ');
+    });
+
+    chat.on("click", "tr", function(e) {
+        var splited = $(this).text().split(':');
+        message.val('@' + splited[0] + ': ');
+    });
 });

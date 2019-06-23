@@ -55,7 +55,7 @@ app.post('/upload', function (req, res) {
 
 //Array of connections to app
 var connections = [];
-
+var users = [];
 //Path to file with chat history
 var historyDir = './history';
 var historyFile = './history/history.txt';
@@ -82,6 +82,11 @@ var writeStream = fs.createWriteStream(historyFile, { 'flags': 'a' });
 io.on('connection', function (socket) {
     socket.on('connected', function () {
         socket.username = "User + " + uuidv1();
+        var user = {
+            name: socket.username,
+            id: socket.id
+        }
+        users.push(user);
         connections.push(socket.username);
         io.emit('connected', { users: connections });
         var message = "Has joined the chat!";
@@ -93,11 +98,63 @@ io.on('connection', function (socket) {
     //Broadcast the new message
     socket.on('send_message', (data) => {
         if (socket.username != undefined) {
-            io.sockets.emit('broadcast_message', { message: data.message, username: socket.username, importance: 3 });
-            writeMessage = socket.username + ": " + data.message + "\n";
-            writeStream.write(writeMessage);
+            if (data.message.length == 0) {
+                var message = "Empty message!";
+                socket.emit('alert', { message: message });
+            } else {
+                if (data.message[0] == '@') {
+                    for(var i = 0; i < data.message.length; i++){
+                        if(data.message[i] == ':'){
+                            var valid = true;
+                            break;
+                        }else{
+                            valid = false;
+                        }
+                    }
+                    if(!valid){
+                        var message = "Please use ':' to send the message!";
+                        socket.emit('alert', { message: message });    
+                    }else{
+                        var splited = data.message.split(':');
+                        var message = splited[1];
+                        if(message.length == 0 || message == ' '){
+                            var message = "Empty message!";
+                            socket.emit('alert', { message: message });
+                        }else{
+                            var toSplit = splited[0];
+                            var splitAgain = toSplit.split('@');
+                            var sendTo = splitAgain[1];
+                            if (sendTo == socket.username) {
+                                var message = "You are sending a message to yourself!";
+                                socket.emit('alert', { message: message });
+                            } else {
+                                var found = null;
+                                for (var i = 0; i < users.length; i++) {
+                                    if (users[i].name == sendTo) {
+                                        found = i;
+                                        break;
+                                    }
+                                }
+                                if (found == null) {
+                                    var message = "No user with that name!";
+                                    socket.emit('alert', { message: message });
+                                } else {
+                                    socket.emit('broadcast_message', { message: message, username: socket.username, importance: 4 });
+                                    socket.broadcast.to(users[found].id).emit('broadcast_message', { message: message, username: socket.username, importance: 4 });
+                                    writeMessage = socket.username + " sent a private message to " + sendTo + ": " + message + "\n";
+                                    writeStream.write(writeMessage);
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    io.sockets.emit('broadcast_message', { message: data.message, username: socket.username, importance: 3 });
+                    writeMessage = socket.username + ": " + data.message + "\n";
+                    writeStream.write(writeMessage);
+                }
+            }
         } else {
-            io.emit('reload');
+            socket.emit('reload');
         }
     });
 
@@ -116,7 +173,7 @@ io.on('connection', function (socket) {
             writeMessage = socket.username + " " + message + "\n";
             writeStream.write(writeMessage);
         } else {
-            io.emit('reload');
+            socket.emit('reload');
         }
     });
 
@@ -127,25 +184,31 @@ io.on('connection', function (socket) {
             var splitedName = socket.username.split('+');
             if (splitedName[0] == newName) {
                 var message = "This is already your name!"
-                io.emit('alert', { message: message });
+                socket.emit('alert', { message: message });
             } else {
+                for(var x = 0; x < users.length; x++){
+                    if(users[x].name == socket.username){
+                        var changeName = x;
+                    }
+                }
                 for (var i = 0; i < connections.length; i++) {
                     if (connections[i] == socket.username) {
-                        var changeID = i;
+                        var changeName1 = i;
                     }
                 }
                 splitedName[0] = newName;
                 var previousName = socket.username;
                 socket.username = splitedName[0].concat(' +', splitedName[1]);
-                connections[changeID] = socket.username;
+                connections[changeName1] = socket.username;
+                users[changeName].name = socket.username;
                 var message = "Changed his username to " + socket.username;
                 io.sockets.emit('broadcast_message', { message: message, username: previousName, importance: 1 });
                 io.emit('connected', { users: connections, username: socket.username });
-                writeMessage = previousName + " " + message + " " + socket.username + "\n";
+                writeMessage = previousName + " " + message + "\n";
                 writeStream.write(writeMessage);
             }
         } else {
-            io.emit('reload');
+            socket.emit('reload');
         }
     });
 
@@ -158,7 +221,11 @@ io.on('connection', function (socket) {
             writeMessage = socket.username + " sent the image: " + img64 + "\n";
             writeStream.write(writeMessage);
         } else {
-            io.emit('reload');
+            if(fs.existsSync('./public/images/' + data.img)){
+                fs.unlinkSync('./public/images/' + data.img);
+            }
+            socket.emit('reload');
         }
     });
+
 });
